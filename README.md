@@ -52,8 +52,8 @@ This project provides hands-on experience in building a real-world web applicati
 
 All members work as **full-stack developers**. Each member participates in both frontend and backend tasks, including building the user interface, writing PHP logic, working with the database, and testing features.
 
-* Lê Minh Nhật
 * Bùi Tiến Lạc
+* Lê Minh Nhật
 * Hồ Thị Bèng
 
 ## Technologies Used
@@ -90,9 +90,3 @@ git clone https://github.com/VIP-lacland/library-management-system.git
 3. Import the database `.sql` file into MySQL.
 4. Configure database settings in the config file.
 5. Run the project in the browser: `http://localhost/library-management-system`
-
-## License
-
-This project is released under the **MIT License**.
-
-You are free to use, copy, modify, merge, publish, and distribute this project for learning or personal purposes. The authors are not responsible for any issues or damages caused by the use of this software.
