@@ -13,17 +13,54 @@ class Controller
    */
   protected function view($view, $data = [])
   {
-    // Extract data array to variables
-    extract($data);
-
-    // Build view file path
-    $viewFile = "../app/views/{$view}.php";
+    // Sanitize view path to prevent directory traversal (allow forward slashes for subdirectories)
+    $view = str_replace(['..', '\\'], '', $view);
+    // Normalize path separators
+    $view = str_replace('\\', '/', $view);
+    
+    // Build view file path using APP_ROOT constant
+    $viewFile = APP_ROOT . "/app/views/{$view}.php";
 
     // Check if view file exists
     if (file_exists($viewFile)) {
+      // Extract data array to variables (safer with EXTR_SKIP flag)
+      extract($data, EXTR_SKIP);
       require_once $viewFile;
     } else {
-      die("View not found: {$view}");
+      // Better error handling
+      error_log("View not found: {$view}");
+      if (ini_get('display_errors')) {
+        die("View not found: {$view}");
+      } else {
+        die("View not found. Please contact the administrator.");
+      }
+    }
+  }
+
+  /**
+   * Load a view file with layout (header and footer)
+   * @param string $view - View file path (relative to app/views/)
+   * @param array $data - Data to pass to the view
+   * @param string $layout - Layout name (default: 'default')
+   */
+  protected function viewWithLayout($view, $data = [], $layout = 'default')
+  {
+    // Extract data array to variables
+    extract($data, EXTR_SKIP);
+    
+    // Include header
+    $headerFile = APP_ROOT . "/app/views/layouts/header.php";
+    if (file_exists($headerFile)) {
+      require_once $headerFile;
+    }
+    
+    // Include the main view content
+    $this->view($view, $data);
+    
+    // Include footer
+    $footerFile = APP_ROOT . "/app/views/layouts/footer.php";
+    if (file_exists($footerFile)) {
+      require_once $footerFile;
     }
   }
 
@@ -34,15 +71,31 @@ class Controller
    */
   protected function model($model)
   {
-    // Build model file path
-    $modelFile = "../app/models/{$model}.php";
+    // Sanitize model name to prevent directory traversal
+    $model = str_replace(['..', '/', '\\'], '', $model);
+    
+    // Build model file path using APP_ROOT constant
+    $modelFile = APP_ROOT . "/app/models/{$model}.php";
 
     // Check if model file exists
     if (file_exists($modelFile)) {
       require_once $modelFile;
-      return new $model();
+      
+      // Check if class exists before instantiating
+      if (class_exists($model)) {
+        return new $model();
+      } else {
+        error_log("Model class '{$model}' not found in file: {$modelFile}");
+        die("Model class '{$model}' not found");
+      }
     } else {
-      die("Model not found: {$model}");
+      // Better error handling
+      error_log("Model file not found: {$model}");
+      if (ini_get('display_errors')) {
+        die("Model not found: {$model}");
+      } else {
+        die("Model not found. Please contact the administrator.");
+      }
     }
   }
 
@@ -52,6 +105,16 @@ class Controller
    */
   protected function redirect($url)
   {
+    // Ensure URL is not empty and starts with /
+    if (empty($url)) {
+      $url = '/';
+    } elseif ($url[0] !== '/') {
+      $url = '/' . $url;
+    }
+    
+    // Prevent header injection
+    $url = filter_var($url, FILTER_SANITIZE_URL);
+    
     header("Location: " . URL_ROOT . $url);
     exit;
   }
