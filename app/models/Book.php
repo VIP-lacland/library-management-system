@@ -1,43 +1,57 @@
 <?php
-class Book {
-    // Lấy thông tin sách theo ID
-    public static function getBookById($id) {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("SELECT * FROM books WHERE id = :id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        $stmt->execute();
-        return $stmt->fetch(PDO::FETCH_ASSOC);
+
+class Book
+{
+    private $db;
+
+    public function __construct()
+    {
+        $this->db = Database::getInstance()->getConnection();
     }
 
-    // Lấy danh sách tất cả sách
-    public static function getAllBooks() {
-        $db = Database::getConnection();
-        $stmt = $db->query("SELECT * FROM books");
-        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    // Lấy thông tin chi tiết sách
+    public function getBookDetail($bookId)
+    {
+        $bookId = (int)$bookId;
+
+        $sql = "
+            SELECT 
+                b.book_id,
+                b.title,
+                b.author,
+                b.publisher,
+                b.publish_year,
+                b.description,
+                b.url,
+                c.name AS category_name
+            FROM Books b
+            LEFT JOIN Categories c ON b.category_id = c.category_id
+            WHERE b.book_id = :id
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id' => $bookId]);
+
+        $book = $stmt->fetch();
+        return $book ? $book : null;
     }
 
-    // Thêm sách mới
-    public static function addBook($data) {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("INSERT INTO books (title, author, year, isbn) VALUES (:title, :author, :year, :isbn)");
-        $stmt->execute($data);
-        return $db->lastInsertId();
-    }
+    // Thống kê trạng thái sách
+    public function getBookItemsStatus($bookId)
+    {
+        $bookId = (int)$bookId;
 
-    // Cập nhật sách
-    public static function updateBook($id, $data) {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("UPDATE books SET title=:title, author=:author, year=:year, isbn=:isbn WHERE id=:id");
-        $data['id'] = $id;
-        return $stmt->execute($data);
-    }
+        $sql = "
+            SELECT status, COUNT(*) as total
+            FROM Book_Items
+            WHERE book_id = :id
+            GROUP BY status
+        ";
 
-    // Xóa sách
-    public static function deleteBook($id) {
-        $db = Database::getConnection();
-        $stmt = $db->prepare("DELETE FROM books WHERE id=:id");
-        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
-        return $stmt->execute();
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['id' => $bookId]);
+
+        return $stmt->fetchAll();
     }
 }
-?>
+
