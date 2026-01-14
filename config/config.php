@@ -8,7 +8,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'library_db');
+define('DB_NAME', 'library_management');
 
 // Application Configuration
 define('APP_NAME', 'Simple MVC Example');
@@ -33,7 +33,7 @@ if (session_status() === PHP_SESSION_NONE) {
 }
 
 // Timezone
-date_default_timezone_set('Asia/Da_Nang');
+date_default_timezone_set('Asia/Ho_Chi_Minh');
 
 // Error Reporting (disable in production)
 error_reporting(E_ALL);

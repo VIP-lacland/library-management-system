@@ -1,0 +1,50 @@
+/* public/css/login.css */
+:root {
+    --primary-red: #bd2130;
+    --dark-red: #84161f;
+}
+
+body.login-body {
+    background-color: #f4f7f6;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+.login-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.login-header {
+    background-color: var(--primary-red);
+    color: white;
+    padding: 25px;
+    text-align: center;
+}
+
+.btn-login {
+    background-color: var(--primary-red);
+    border: none;
+    color: white;
+    padding: 10px;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-login:hover {
+    background-color: var(--dark-red);
+    transform: translateY(-1px);
+    color: white;
+}
+
+.auth-link {
+    color: var(--primary-red);
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.auth-link:hover {
+    text-decoration: underline;
+}
