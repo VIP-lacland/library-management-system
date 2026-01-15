@@ -1,26 +1,128 @@
-<!DOCTYPE html>
-<html lang="vi">
+﻿<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo APP_NAME; ?> - Hệ thống Quản lý Thư viện</title>
-    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/style.css">
+    <link rel="stylesheet" href="../../../public/css/header.css">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <header>
+        <!-- Top Header -->
+        <div class="header-top">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Library System</span>
+            </a>
 
-<header>
-    <div class="container">
-        <h1><?php echo APP_NAME; ?></h1>
-        <p>Phiên bản <?php echo APP_VERSION; ?></p>
-        
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search books, authors, categories...">
+                <button class="search-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <a href="#" class="login-btn">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Login
+            </a>
+        </div>
+
+        <!-- Navigation Bar -->
         <nav>
-            <ul>
-                <li><a href="<?php echo URL_ROOT; ?>/?url=book/index">Danh sách sách</a></li>
-                <li><a href="<?php echo URL_ROOT; ?>/?url=book/create">Thêm sách</a></li>
-                <li><a href="<?php echo URL_ROOT; ?>/">Trang chủ</a></li>
-            </ul>
-        </nav>
-    </div>
-</header>
+            <div class="nav-container">
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-house"></i>
+                            Home
+                        </a>
+                    </li>
 
-<main class="container">
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-book"></i>
+                            Books
+                            <!-- <i class="fa-solid fa-chevron-down dropdown-arrow"></i> -->
+                        </a>
+                        <!-- <div class="dropdown-content">
+                            <a href="#"><i class="fa-solid fa-list"></i> Book Listing</a>
+                            <a href="#"><i class="fa-solid fa-info-circle"></i> Book Details</a>
+                        </div> -->
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-hand-holding-heart"></i>
+                            My Borrowed Books
+                            <!-- <i class="fa-solid fa-chevron-down dropdown-arrow"></i> -->
+                        </a>
+                        <!-- <div class="dropdown-content">
+                            <a href="#"><i class="fa-solid fa-paper-plane"></i> Borrow Request</a>
+                            <a href="#"><i class="fa-solid fa-rotate-left"></i> Return Book</a>
+                            <a href="#"><i class="fa-solid fa-arrows-rotate"></i> Renew Book</a>
+                            <a href="#"><i class="fa-solid fa-tasks"></i> Track Status</a>
+                        </div> -->
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-tags"></i>
+                            Categories
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-user-circle"></i>
+                            Profile
+                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="#"><i class="fa-solid fa-user"></i> My Profile</a>
+                            <a href="#"><i class="fa-solid fa-key"></i> Change Password</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!event.target.closest('nav') && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Handle dropdown on mobile
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (window.innerWidth <= 992) {
+                    if (this.querySelector('.dropdown-content')) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+

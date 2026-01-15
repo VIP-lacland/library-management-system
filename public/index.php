@@ -1,11 +1,11 @@
 <?php
 
-require_once '../config/config.php';
+require_once '../app/config/config.php';
 require_once '../app/core/Controller.php';
 require_once '../app/core/Database.php';
 
 // Lấy URL từ $_GET['url'] hoặc mặc định là 'book'
-$url = $_GET['url'] ?? 'book/detail';
+$url = $_GET['url'] ?? 'book/index';
 $url = rtrim($url, '/');
 $url = explode('/', $url);
 
@@ -19,8 +19,8 @@ if (!file_exists($controllerFile)) {
 
 require_once $controllerFile;
 
-// Xác định phương thức - mặc định là 'detail'
-$method = !empty($url[1]) ? $url[1] : 'detail';
+// Xác định phương thức - mặc định là 'index'
+$method = !empty($url[1]) ? $url[1] : 'index';
 
 // Lấy tham số từ URL
 $param = !empty($url[2]) ? $url[2] : null;
@@ -44,3 +44,5 @@ if ($param !== null) {
 } else {
     $controller->$method();
 }
+?>
+>>>>>>> origin/feature/book-listing

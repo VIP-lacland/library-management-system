@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 class Book
 {
@@ -7,6 +7,16 @@ class Book
     public function __construct()
     {
         $this->db = Database::getInstance()->getConnection();
+    }
+
+    // Lấy tất cả sách
+    public function getAllBooks()
+    {
+        $sql = "SELECT * FROM Books";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+
+        return $stmt->fetchAll();
     }
 
     // Lấy thông tin chi tiết sách
@@ -36,6 +46,14 @@ class Book
         return $book ? $book : null;
     }
 
+    // Lấy sách theo ID
+    public function getById($id)
+    {
+        $stmt = $this->db->prepare("SELECT * FROM Books WHERE book_id = :id");
+        $stmt->execute(['id' => $id]);
+        return $stmt->fetch();
+    }
+
     // Thống kê trạng thái sách
     public function getBookItemsStatus($bookId)
     {
@@ -54,4 +72,3 @@ class Book
         return $stmt->fetchAll();
     }
 }
-

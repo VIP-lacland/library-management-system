@@ -1,0 +1,19 @@
+# public/.htaccess
+
+# Bật Rewrite Engine
+RewriteEngine On
+
+# Chặn truy cập trực tiếp vào thư mục
+Options -Indexes
+
+# Nếu file hoặc thư mục tồn tại, truy cập trực tiếp
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Chuyển tất cả request đến index.php
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Cấu hình PHP (tùy chọn)
+php_flag display_errors On
+php_value upload_max_filesize 10M
+php_value post_max_size 10M

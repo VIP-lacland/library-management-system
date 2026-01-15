@@ -9,6 +9,13 @@ class BookController extends Controller
         $this->bookModel = $this->model('Book');
     }
 
+    // Hiển thị trang chủ - danh sách tất cả sách
+    public function index()
+    {
+        $books = $this->bookModel->getAllBooks();
+        $this->view('index', ['books' => $books]);
+    }
+
     // Hiển thị trang chi tiết sách
     public function detail($id = null)
     {
@@ -29,6 +36,5 @@ class BookController extends Controller
             'statuses' => $statuses
         ]);
     }
-
-
 }
+?>
