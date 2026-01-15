@@ -8,16 +8,94 @@ require_once __DIR__ . '/../config/config.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/home.css">
-    <title>Home Page</title>
+    <title>Home Page - Library Management System</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/header.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/footer.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/home.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background: #f5f5f5;
+        }
+
+        main {
+            flex: 1;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
 </head>
 
-<?php require_once __DIR__ . '/../views/layouts/header.php'; ?>
-
 <body>
-    <div class="container">
-        <div class="row g-4 mt-3">
+    <header>
+        <!-- Top Header -->
+        <div class="header-top">
+            <a href="<?php echo URL_ROOT; ?>/?url=book/index" class="logo">
+                <i class="fa-solid fa-book-open"></i>
+                <span>Library System</span>
+            </a>
+
+            <div class="search-container">
+                <input type="text" class="search-bar" placeholder="Search books, authors, categories...">
+                <button class="search-btn">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
+
+            <a href="#" class="login-btn">
+                <i class="fa-solid fa-right-to-bracket"></i>
+                Login
+            </a>
+        </div>
+
+        <!-- Navigation Bar -->
+        <nav>
+            <div class="nav-container">
+                <button class="menu-toggle" onclick="toggleMenu()">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+                
+                <ul class="nav-menu" id="navMenu">
+                    <li class="nav-item">
+                        <a href="<?php echo URL_ROOT; ?>/?url=book/index" class="nav-link">
+                            <i class="fa-solid fa-house"></i>
+                            Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="<?php echo URL_ROOT; ?>/?url=book/index" class="nav-link">
+                            <i class="fa-solid fa-book"></i>
+                            Books
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a href="#" class="nav-link">
+                            <i class="fa-solid fa-user-circle"></i>
+                            Profile
+                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+                        </a>
+                        <div class="dropdown-content">
+                            <a href="#"><i class="fa-solid fa-user"></i> My Profile</a>
+                            <a href="#"><i class="fa-solid fa-key"></i> Change Password</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="row g-4 mt-3">
             <?php if (isset($books) && !empty($books)): ?>
                 <?php foreach ($books as $book): ?>
                     <div class="col-md-3">
@@ -34,7 +112,7 @@ require_once __DIR__ . '/../config/config.php';
                                 </div>
 
                                 <div class="mt-auto">
-                                    <a href="#" class="btn btn-primary w-100">View Details</a>
+                                    <a href="<?php echo URL_ROOT; ?>/?url=book/detail/<?php echo $book['book_id']; ?>" class="btn btn-primary w-100">View Details</a>
                                 </div>
                             </div>
                         </div>
@@ -47,10 +125,54 @@ require_once __DIR__ . '/../config/config.php';
             <?php endif; ?>
         </div>
     </div>
+    </main>
 
+    <footer>
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <p>&copy; 2024 Library Management System. All rights reserved.</p>
+            <p>Library Management System - Developed by Your Team</p>
+            
+            <div class="social-links">
+                <a href="#" title="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" title="Twitter"><i class="fa-brands fa-twitter"></i></a>
+                <a href="#" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#" title="LinkedIn"><i class="fa-brands fa-linkedin-in"></i></a>
+                <a href="#" title="Email"><i class="fa-solid fa-envelope"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
 
-<?php require_once __DIR__ . '/../views/layouts/footer.php'; ?>
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!event.target.closest('nav') && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Handle dropdown on mobile
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (window.innerWidth <= 992) {
+                    if (this.querySelector('.dropdown-content')) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                    }
+                }
+            });
+        });
+    </script>
+</body>
 
 </html>

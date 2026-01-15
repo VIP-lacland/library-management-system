@@ -45,4 +45,3 @@ if ($param !== null) {
     $controller->$method();
 }
 ?>
->>>>>>> origin/feature/book-listing
