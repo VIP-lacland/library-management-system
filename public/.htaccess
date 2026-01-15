@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    # 1. Bật bộ máy ghi lại đường dẫn
+    RewriteEngine On
+
+    # 2. Định nghĩa thư mục gốc của dự án (tính từ htdocs)
+    RewriteBase /library-management-system/public/
+
+    # 3. Nếu là file hoặc thư mục có thật (như file CSS, hình ảnh) thì cứ mở nó ra
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+
+    # 4. Nếu không phải file có thật, đẩy hết vào index.php dưới dạng biến url
+    # Ví dụ: /auth sẽ thành index.php?url=auth
+    RewriteRule ^(.+)$ index.php?url=$1 [QSA,L]
+</IfModule>
