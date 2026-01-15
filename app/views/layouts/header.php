@@ -77,35 +77,6 @@
                         </a>
                     </li>
 
-                    <!-- <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fa-solid fa-users-gear"></i>
-                            Management
-                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
-                        </a>
-                        <div class="dropdown-content">
-                            <a href="#"><i class="fa-solid fa-plus-circle"></i> Book CRUD</a>
-                            <a href="#"><i class="fa-solid fa-tags"></i> Category CRUD</a>
-                            <a href="#"><i class="fa-solid fa-users"></i> Reader List</a>
-                            <a href="#"><i class="fa-solid fa-check-circle"></i> Confirm Borrow</a>
-                            <a href="#"><i class="fa-solid fa-ban"></i> Block/Unblock</a>
-                            <a href="#"><i class="fa-solid fa-triangle-exclamation"></i> Overdue Management</a>
-                        </div>
-                    </li> -->
-
-                    <!-- <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fa-solid fa-chart-bar"></i>
-                            Reports
-                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
-                        </a>
-                        <div class="dropdown-content">
-                            <a href="#"><i class="fa-solid fa-file-alt"></i> Borrowing Report</a>
-                            <a href="#"><i class="fa-solid fa-chart-line"></i> Popular Books</a>
-                            <a href="#"><i class="fa-solid fa-warehouse"></i> Inventory Report</a>
-                        </div>
-                    </li> -->
-
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fa-solid fa-user-circle"></i>

@@ -1,7 +1,5 @@
 <?php
 
-use LDAP\Result;
-
 class Book extends Database {
   private $db;
   
@@ -17,11 +15,11 @@ class Book extends Database {
     $this->db = Database::getInstance()->getConnection();
   }
 
-  public function getAll() {
+  public function getAllBooks() {
     $result = $this->db->query("SELECT * FROM Books");
 
     $books = [];
-      while ($row = $result->fetch()) {
+      while ($row = $result->fetch(PDO::FETCH_ASSOC)) {
         $books[] = $row;
       }
     
