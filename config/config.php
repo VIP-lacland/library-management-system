@@ -16,7 +16,8 @@ define('APP_VERSION', '1.0.0');
 
 // URL Configuration
 // MUST match your project folder + public
-define('URL_ROOT', 'http://localhost/library-management-system/public');
+define('URL_ROOT', '/library-management-system/public');
+
 
 // Path Configuration
 define('APP_ROOT', dirname(dirname(__FILE__)));
