@@ -1,4 +1,5 @@
 <?php
+<<<<<<< HEAD
 require_once '../config/config.php';
 require_once '../app/core/Router.php';
 
@@ -22,3 +23,18 @@ $router->get('/dashboard', 'DashboardController', 'index');
 
 // ===== RUN =====
 $router->dispatch();
+=======
+
+require_once '../app/config/config.php';
+require_once '../app/core/Database.php';
+require_once '../app/core/Controller.php';
+
+
+require_once('../app/controllers/BookController.php');
+
+
+$bookController = new BookController();
+$bookController->index();
+
+?>
+>>>>>>> origin/feature/book-listing
