@@ -4,7 +4,7 @@
  * Handles database connection using PDO with singleton pattern
  */
 
-class Database
+class Database 
 {
   private static $instance = null;
   private $connection;
@@ -27,8 +27,19 @@ class Database
       // Set default fetch mode to associative array
       $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
 
+      // Disable emulated prepared statements for better security
+      $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+
     } catch (PDOException $e) {
-      die("Database Connection Failed: " . $e->getMessage());
+      // Log error (in production, log to file instead of displaying)
+      error_log("Database Connection Failed: " . $e->getMessage());
+      
+      // Show user-friendly error message
+      if (ini_get('display_errors')) {
+        die("Database Connection Failed: " . $e->getMessage());
+      } else {
+        die("Database Connection Failed. Please contact the administrator.");
+      }
     }
   }
 
