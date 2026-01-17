@@ -18,6 +18,9 @@ $router->get('/auth', 'AuthController', 'loginForm');
 $router->post('/auth/login', 'AuthController', 'login');
 $router->get('/logout', 'AuthController', 'logout');
 $router->get('/forgot-password', 'AuthController', 'forgotPassword');
+$router->post('/forgot-password', 'AuthController', 'forgotPassword');
+$router->get('/reset-password', 'AuthController', 'resetPassword');
+$router->post('/reset-password', 'AuthController', 'resetPassword');
 $router->get('/dashboard', 'DashboardController', 'index');
 
 // ===== RUN =====
