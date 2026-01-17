@@ -8,59 +8,52 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Footer -->
     <footer>
         <div class="footer-container">
             <div class="footer-content">
-                <!-- User Section -->
+                <!-- Logo và thống kê -->
                 <div class="footer-section">
-                    <h3><i class="fa-solid fa-user"></i> User</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fa-solid fa-right-to-bracket"></i> Login</a></li>
-                        <li><a href="#"><i class="fa-solid fa-user-plus"></i> Register</a></li>
-                        <li><a href="#"><i class="fa-solid fa-key"></i> Password Reset</a></li>
-                        <li><a href="#"><i class="fa-solid fa-user-circle"></i> User Profile</a></li>
-                        <li><a href="#"><i class="fa-solid fa-clock-rotate-left"></i> Borrow History</a></li>
+                    <div class="footer-logo">
+                        <div class="logo-img">U</div>
+                        <div class="logo-text">
+                            <h3>THƯ VIỆN ĐIỆN TỬ</h3>
+                        </div>
+                    </div>
+                    <div class="footer-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">lượt online</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">1</div>
+                            <div class="stat-label">tổng lượt truy cập</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tài liệu -->
+                <div class="footer-section">
+                    <h4>Tài liệu</h4>
+                    <ul>
+                        <li><a href="#">Sách điện tử</a></li>
+                        <li><a href="#">Sách nói</a></li>
+                        <li><a href="#">Bài giảng điện tử</a></li>
+                        <li><a href="#">Album</a></li>
+                        <li><a href="#">Video</a></li>
                     </ul>
                 </div>
 
-                <!-- Books Section -->
+                <!-- Tin tức -->
                 <div class="footer-section">
-                    <h3><i class="fa-solid fa-book"></i> Books Management</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fa-solid fa-list"></i> Book Listing</a></li>
-                        <li><a href="#"><i class="fa-solid fa-info-circle"></i> Book Detail</a></li>
-                        <li><a href="#"><i class="fa-solid fa-magnifying-glass"></i> Search & Sort Books</a></li>
-                        <li><a href="#"><i class="fa-solid fa-plus-circle"></i> Book CRUD</a></li>
-                        <li><a href="#"><i class="fa-solid fa-tags"></i> Category CRUD</a></li>
-                        <li><a href="#"><i class="fa-solid fa-chart-line"></i> Popular Books</a></li>
+                    <h4>Tin tức</h4>
+                    <ul>
+                        <li><a href="#">Giới thiệu</a></li>
+                        <li><a href="#">Blog</a></li>
                     </ul>
                 </div>
 
-                <!-- Borrowing Section -->
+                <!-- Trống (để cân đối layout) -->
                 <div class="footer-section">
-                    <h3><i class="fa-solid fa-hand-holding-heart"></i> Borrowing</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fa-solid fa-paper-plane"></i> Borrow Request</a></li>
-                        <li><a href="#"><i class="fa-solid fa-check-circle"></i> Borrow Confirmation</a></li>
-                        <li><a href="#"><i class="fa-solid fa-book-open"></i> Borrowed Books List</a></li>
-                        <li><a href="#"><i class="fa-solid fa-rotate-left"></i> Return Book</a></li>
-                        <li><a href="#"><i class="fa-solid fa-arrows-rotate"></i> Borrow Renewal</a></li>
-                        <li><a href="#"><i class="fa-solid fa-tasks"></i> Status Tracking</a></li>
-                        <li><a href="#"><i class="fa-solid fa-triangle-exclamation"></i> Overdue Management</a></li>
-                    </ul>
-                </div>
-
-                <!-- Management Section -->
-                <div class="footer-section">
-                    <h3><i class="fa-solid fa-users-gear"></i> Administration</h3>
-                    <ul class="footer-links">
-                        <li><a href="#"><i class="fa-solid fa-users"></i> Reader List</a></li>
-                        <li><a href="#"><i class="fa-solid fa-address-card"></i> Reader Detail</a></li>
-                        <li><a href="#"><i class="fa-solid fa-ban"></i> Block/Unblock Reader</a></li>
-                        <li><a href="#"><i class="fa-solid fa-file-alt"></i> Borrowing Report</a></li>
-                        <li><a href="#"><i class="fa-solid fa-warehouse"></i> Inventory Report</a></li>
-                    </ul>
                 </div>
             </div>
 

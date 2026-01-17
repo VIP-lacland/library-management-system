@@ -87,24 +87,25 @@ INSERT INTO Categories (name) VALUES
 ('History'),
 ('Technology'),
 ('Economics'),
-('Psychology'),
-('Philosophy'),
+('Business'),
 ('Arts'),
 ('Children'),
 ('Education');
 
--- Insert data into Books table
+
 INSERT INTO Books (title, category_id, publisher, publish_year, description, author, url) VALUES
-('To Kill a Mockingbird', 1, 'Harper Collins', 2020, 'A classic novel about racial injustice in the Deep South', 'Harper Lee', 'https://example.com/mockingbird'),
-('The Alchemist', 1, 'HarperOne', 2019, 'A book about following your dreams and personal legend', 'Paulo Coelho', 'https://example.com/alchemist'),
-('Introduction to Physics', 2, 'Education Publishing', 2021, 'Fundamental physics textbook', 'Robert Johnson', 'https://example.com/physics'),
-('World History Encyclopedia', 3, 'National Publishing House', 2018, 'Comprehensive guide to world history', 'William Anderson', 'https://example.com/history'),
-('Python Programming', 4, 'Tech Books Press', 2022, 'Complete guide to Python from beginner to advanced', 'James Thompson', 'https://example.com/python'),
-('Principles of Microeconomics', 5, 'Economics Press', 2020, 'Introduction to microeconomic theory', 'Gregory Mankiw', 'https://example.com/microeconomics'),
-('How to Win Friends and Influence People', 6, 'Simon & Schuster', 2019, 'Classic self-help book on interpersonal skills', 'Dale Carnegie', 'https://example.com/win-friends'),
-('The Power of Now', 6, 'New World Library', 2021, 'Guide to spiritual enlightenment and mindfulness', 'Eckhart Tolle', 'https://example.com/power-now'),
-('Charlotte\'s Web', 9, 'HarperCollins Children', 2017, 'Classic children\'s story about friendship', 'E.B. White', 'https://example.com/charlottes-web'),
-('Artificial Intelligence Basics', 4, 'Tech Publishing', 2023, 'Introduction to AI and Machine Learning', 'Andrew Ng', 'https://example.com/ai-basics');
+('Being Digital', 4, 'Alfred A. Knopf, Inc', 1995, 'A classic tech book exploring how digital technology reshapes all parts of life — from bits vs. atoms to the digital future of media, communication, and society. It’s less about code and more about the philosophy of living in a digital world', 'Nicholas Negroponte', '../../public/images/Technology/tech1.jpg'),
+('Life 3.0: Being Human in the Age of Artificial Intelligence', 4, 'Alfred A. Knopf (US); Allen Lane (UK)', 2017, 'A deep-dive into the future of AI — how it works, potential impacts on society, jobs, ethics, and the pathways toward positive (or risky) futures with intelligent machines', 'Max Tegmark', '../../public/images/Technology/tech2.jpg'),
+('Revolution in the Valley: The Insanely Great Story of How the Mac Was Made', 4, 'O’Reilly Media', 2004, 'Insider recount of how the Apple Macintosh was developed — a mix of technical storytelling and personal anecdotes from an original member of the Mac team. Cool for history/tech culture nerds', 'Andy Hertzfeld', '../../public/images/Technology/tech3.jpg'),
+('A Brief History of Time', 2, 'Bantam Dell Publishing Group', 1988, 'Explains the universe, time, black holes, and the Big Bang in an accessible way for general readers. One of the most famous popular science books of the 20th century', 'Stephen Hawking', '../../public/images/Science/science1.jpg'),
+('Fundamentals: Ten Keys to Reality', 2, 'Penguin Random House', 2021, 'Nobel laureate Frank Wilczek presents ten fundamental principles that underlie reality, from space and time to the structure of matter, in an accessible way for curious minds', 'Frank Wilczek', '../../public/images/Science/science2.jpg'),
+('Physics of the Future', 2, 'Vintage / Doubleday', 2011, 'Predicts how science and tech like AI, space travel, and medicine might evolve by the year 2100, based on interviews with top scientists', 'Michio Kaku', '../../public/images/Science/science3.jpg'),
+('How to Win Friends and Influence People', 7, 'Simon & Schuster', 1936, 'A timeless classic on interpersonal skills, leadership, and influence in business and life. Teaches how to connect with people effectively and build better relationships — core for networking, sales, and team leadership', 'Dale Carnegie', '../../public/images/Business/business1.jpg'),
+('Shoe Dog: A Memoir by the Creator of Nike', 7, 'Simon & Schuster / Scribner', 2016, 'A candid memoir from Nike’s co‑founder documenting the messy, chaotic road to building one of the world’s most iconic brands. It highlights persistence, entrepreneurship, and risk in the real business world', 'Phil Knight', '../../public/images/Business/business2.jpg'),
+('The Seven-Day Weekend', 7, 'Century', 2003, 'Challenges traditional work models by advocating for flexible, self-managed workplaces. Offers a radical perspective on work culture and innovation', 'Ricardo Semler', '../../public/images/Business/business3.jpg'),
+('The Science of Success', 7, 'John Wiley & Sons', 2007, 'Explains Market‑Based Management (MBM) principles used to grow Koch Industries into a global powerhouse. Focuses on decision‑making, incentives, and organizational value creation', 'Charles G. Koch', '../../public/images/Business/business4.jpg');
+
+
 
 -- Insert data into Book_Items table (each book has 2-3 copies)
 INSERT INTO Book_Items (book_id, status, barcode) VALUES
