@@ -1,7 +1,8 @@
-# public/.htaccess
-
 # Bật Rewrite Engine
 RewriteEngine On
+
+# Đặt base path
+RewriteBase /
 
 # Chặn truy cập trực tiếp vào thư mục
 Options -Indexes
@@ -10,8 +11,8 @@ Options -Indexes
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Chuyển tất cả request đến index.php
-RewriteRule ^(.*)$ index.php [QSA,L]
+# Chuyển tất cả request đến index.php và truyền URL vào parameter
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
 
 # Cấu hình PHP (tùy chọn)
 php_flag display_errors On

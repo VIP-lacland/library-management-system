@@ -1,0 +1,255 @@
+/* Font + base */
+body {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #fefeff;
+    color: #0f172a;
+    margin: 0;
+    padding: 0;
+}
+
+/* Center form */
+.container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+/* Card - FIXED SIZE */
+.card {
+    width: 100%;
+    max-width: 480px; /* ✅ Tăng lên để thoải mái hơn */
+    min-height: 650px; /* ✅ Đặt chiều cao cố định */
+    border: none;
+    box-shadow:
+        0 4px 6px rgba(0, 0, 0, 0.06),
+        0 16px 40px rgba(15, 23, 42, 0.12);
+    border-radius: 14px;
+    background: white;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header */
+.card-header {
+    background: transparent;
+    border-bottom: none;
+    padding: 32px 32px 16px;
+    text-align: left;
+    flex-shrink: 0; /* ✅ Không cho co lại */
+}
+
+.card-header h4 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+/* Body */
+.card-body {
+    padding: 0 32px 32px;
+    flex: 1; /* ✅ Chiếm hết không gian còn lại */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Alert Container - FIXED HEIGHT */
+.alert-container {
+    min-height: 80px; /* ✅ Dành sẵn chỗ cho thông báo */
+    margin-bottom: 16px;
+}
+
+/* Error alert */
+.alert-danger {
+    background-color: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: left; /* ✅ Căn trái thay vì giữa */
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.1);
+    animation: slideDown 0.3s ease; /* ✅ Hiệu ứng xuất hiện */
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.alert-danger ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.alert-danger li {
+    font-weight: 500;
+    margin-bottom: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    position: relative;
+    padding-left: 20px; /* ✅ Thêm khoảng trống cho icon */
+}
+
+.alert-danger li:last-child {
+    margin-bottom: 0;
+}
+
+.alert-danger li::before {
+    content: "⚠"; /* ✅ Thêm icon cảnh báo */
+    position: absolute;
+    left: 0;
+    font-size: 14px;
+}
+
+/* Success alert */
+.alert-success {
+    background-color: #d1fae5;
+    color: #065f46;
+    border: 1px solid #6ee7b7;
+    border-radius: 10px;
+    padding: 14px 18px;
+    text-align: left;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.1);
+    animation: slideDown 0.3s ease;
+}
+
+/* Form layout */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    flex: 1; /* ✅ Chiếm hết không gian */
+}
+
+/* Input box */
+.input_box {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Label */
+.input_box label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #334155;
+    margin-bottom: 8px;
+}
+
+/* Input */
+.input_box input {
+    height: 46px;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+    padding: 0 14px;
+    font-size: 15px;
+    background-color: #f8fafc;
+    transition: all 0.2s ease;
+    box-sizing: border-box; /* ✅ Quan trọng! */
+}
+
+.input_box input::placeholder {
+    color: #94a3b8;
+}
+
+.input_box input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+}
+
+/* Password note */
+.input_box small {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: #64748b;
+    font-style: italic;
+}
+
+/* Button container */
+.d-grid {
+    margin-top: auto; /* ✅ Đẩy button xuống dưới */
+    padding-top: 8px;
+}
+
+/* Button */
+.d-grid button {
+    height: 46px;
+    width: 100%;
+    border-radius: 10px;
+    background-color: #1d7af3;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+
+.d-grid button:hover {
+    background-color: #1666d3;
+    box-shadow: 0 10px 20px rgba(29, 122, 243, 0.3);
+    transform: translateY(-1px);
+}
+
+.d-grid button:active {
+    transform: translateY(0);
+}
+
+/* Footer link */
+.text-center {
+    margin-top: 16px;
+    text-align: center;
+    flex-shrink: 0; /* ✅ Không cho co lại */
+}
+
+.text-center p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+.text-center a {
+    color: #1d7af3;
+    font-weight: 500;
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.text-center a:hover {
+    color: #1666d3;
+    text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .card {
+        max-width: 100%;
+        min-height: 600px;
+        margin: 10px;
+    }
+    
+    .card-header {
+        padding: 24px 24px 12px;
+    }
+    
+    .card-header h4 {
+        font-size: 22px;
+    }
+    
+    .card-body {
+        padding: 0 24px 24px;
+    }
+}
