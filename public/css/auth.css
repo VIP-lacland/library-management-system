@@ -16,48 +16,58 @@ body {
     padding: 20px;
 }
 
-/* Card - FIXED SIZE */
+/* Override Bootstrap */
+.container .row {
+    width: 100%;
+    max-width: 540px;
+    margin: 0;
+}
+
+.container .col-md-6 {
+    max-width: 100%;
+    padding: 0;
+}
+
+/* Card */
 .card {
     width: 100%;
-    max-width: 480px; /* ✅ Tăng lên để thoải mái hơn */
-    min-height: 650px; /* ✅ Đặt chiều cao cố định */
     border: none;
     box-shadow:
-        0 4px 6px rgba(0, 0, 0, 0.06),
-        0 16px 40px rgba(15, 23, 42, 0.12);
-    border-radius: 14px;
+        0 2px 4px rgba(0, 0, 0, 0.04),
+        0 8px 16px rgba(15, 23, 42, 0.08);
+    border-radius: 16px;
     background: white;
-    display: flex;
-    flex-direction: column;
+    padding: 40px 32px; /* ✅ Padding trực tiếp cho card */
 }
 
 /* Header */
 .card-header {
-    background: transparent;
-    border-bottom: none;
-    padding: 32px 32px 16px;
+    background: transparent !important;
+    border-bottom: none !important;
+    padding: 0 0 24px 0 !important;
     text-align: left;
-    flex-shrink: 0; /* ✅ Không cho co lại */
+    margin: 0 !important;
 }
 
 .card-header h4 {
     font-size: 24px;
     font-weight: 700;
-    color: #0f172a;
+    color: #0f172a !important;
     margin: 0;
 }
 
-/* Body */
+/* Body - chứa alert */
 .card-body {
-    padding: 0 32px 32px;
-    flex: 1; /* ✅ Chiếm hết không gian còn lại */
-    display: flex;
-    flex-direction: column;
+    padding: 0 !important;
+    margin-bottom: 16px;
 }
 
-/* Alert Container - FIXED HEIGHT */
+/* Alert Container */
 .alert-container {
-    min-height: 80px; /* ✅ Dành sẵn chỗ cho thông báo */
+    transition: all 0.3s ease;
+}
+
+.alert-container:not(:empty) {
     margin-bottom: 16px;
 }
 
@@ -68,9 +78,9 @@ body {
     border: 1px solid #fca5a5;
     border-radius: 10px;
     padding: 14px 18px;
-    text-align: left; /* ✅ Căn trái thay vì giữa */
+    text-align: left;
     box-shadow: 0 2px 6px rgba(239, 68, 68, 0.1);
-    animation: slideDown 0.3s ease; /* ✅ Hiệu ứng xuất hiện */
+    animation: slideDown 0.3s ease;
 }
 
 @keyframes slideDown {
@@ -96,7 +106,7 @@ body {
     font-size: 14px;
     line-height: 1.5;
     position: relative;
-    padding-left: 20px; /* ✅ Thêm khoảng trống cho icon */
+    padding-left: 20px;
 }
 
 .alert-danger li:last-child {
@@ -104,7 +114,7 @@ body {
 }
 
 .alert-danger li::before {
-    content: "⚠"; /* ✅ Thêm icon cảnh báo */
+    content: "⚠";
     position: absolute;
     left: 0;
     font-size: 14px;
@@ -126,14 +136,15 @@ body {
 form {
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    flex: 1; /* ✅ Chiếm hết không gian */
+    gap: 22px;
+    padding: 0 !important; /* ✅ Bỏ padding của Bootstrap */
 }
 
 /* Input box */
 .input_box {
     display: flex;
     flex-direction: column;
+    margin: 0 !important; /* ✅ Bỏ margin của Bootstrap */
 }
 
 /* Label */
@@ -145,17 +156,17 @@ form {
     margin-bottom: 8px;
 }
 
-/* Input */
+/* Input - Override Bootstrap */
 .input_box input {
-    height: 46px;
-    width: 100%;
-    border-radius: 10px;
-    border: 1px solid #e2e8f0;
-    padding: 0 14px;
-    font-size: 15px;
-    background-color: #f8fafc;
-    transition: all 0.2s ease;
-    box-sizing: border-box; /* ✅ Quan trọng! */
+    height: 52px !important;
+    width: 100% !important;
+    border-radius: 10px !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 0 16px !important;
+    font-size: 15px !important;
+    background-color: #f8fafc !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
 }
 
 .input_box input::placeholder {
@@ -163,10 +174,10 @@ form {
 }
 
 .input_box input:focus {
-    outline: none;
-    border-color: #3b82f6;
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+    outline: none !important;
+    border-color: #3b82f6 !important;
+    background-color: #ffffff !important;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
 }
 
 /* Password note */
@@ -180,27 +191,27 @@ form {
 
 /* Button container */
 .d-grid {
-    margin-top: auto; /* ✅ Đẩy button xuống dưới */
-    padding-top: 8px;
+    margin-top: 8px !important;
+    padding: 0 !important;
 }
 
-/* Button */
+/* Button - Override Bootstrap */
 .d-grid button {
-    height: 46px;
-    width: 100%;
-    border-radius: 10px;
-    background-color: #1d7af3;
-    border: none;
-    font-size: 15px;
-    font-weight: 600;
-    color: white;
-    transition: all 0.25s ease;
+    height: 52px !important;
+    width: 100% !important;
+    border-radius: 10px !important;
+    background-color: #1d7af3 !important;
+    border: none !important;
+    font-size: 15px !important;
+    font-weight: 600 !important;
+    color: white !important;
+    transition: all 0.25s ease !important;
     cursor: pointer;
 }
 
 .d-grid button:hover {
-    background-color: #1666d3;
-    box-shadow: 0 10px 20px rgba(29, 122, 243, 0.3);
+    background-color: #1666d3 !important;
+    box-shadow: 0 10px 20px rgba(29, 122, 243, 0.3) !important;
     transform: translateY(-1px);
 }
 
@@ -210,9 +221,9 @@ form {
 
 /* Footer link */
 .text-center {
-    margin-top: 16px;
+    margin-top: 24px !important;
     text-align: center;
-    flex-shrink: 0; /* ✅ Không cho co lại */
+    padding-bottom: 12px;
 }
 
 .text-center p {
@@ -236,20 +247,19 @@ form {
 /* Responsive */
 @media (max-width: 640px) {
     .card {
-        max-width: 100%;
-        min-height: 600px;
+        padding: 32px 24px;
         margin: 10px;
     }
     
     .card-header {
-        padding: 24px 24px 12px;
+        padding: 0 0 16px 0 !important;
     }
     
     .card-header h4 {
         font-size: 22px;
     }
     
-    .card-body {
-        padding: 0 24px 24px;
+    form {
+        gap: 18px;
     }
 }

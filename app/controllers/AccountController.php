@@ -48,8 +48,9 @@ class AccountController extends Controller
         }
 
         if (!empty($errors)) {
-            $_SESSION['register_errors'] = $errors;
-            $_SESSION['old'] = ['username' => $username, 'email' => $email];
+            $this->setFlash('errors', $errors);
+            $this->setFlash('old_username', $username);
+            $this->setFlash('old_email', $email);
             $this->redirect(url('index.php?action=register'));  
             exit();
         }
@@ -58,8 +59,9 @@ class AccountController extends Controller
         $user = $this->model('User');
 
         if ($user->emailExists($email)) {
-            $this->setFlash('error', 'Email already exists');
-            $_SESSION['old'] = ['email' => $email];
+            $this->setFlash('errors', ['Email already exists']);
+            $this->setFlash('old_username', $username);
+            $this->setFlash('old_email', $email);
             $this->redirect(url('index.php?action=register'));  
             exit();
         }
@@ -68,7 +70,7 @@ class AccountController extends Controller
             $this->setFlash('success', 'Registration successful');
             $this->redirect(url('index.php?action=login')); 
         } else {
-            $this->setFlash('error', 'Registration failed, please try again');
+            $this->setFlash('errors', ['Registration failed, please try again']);
             $this->redirect(url('index.php?action=register'));  
             exit();
         }

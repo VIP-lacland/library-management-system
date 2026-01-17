@@ -9,7 +9,7 @@ require_once('../app/controllers/AccountController.php');
 
 // Get action from URL parameter, default to 'index' if not provided
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
-echo $action;
+
 
 
 $bookController = new BookController();
