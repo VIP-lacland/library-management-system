@@ -11,7 +11,7 @@
     <header>
         <!-- Top Header -->
         <div class="header-top">
-            <a href="#" class="logo">
+            <a href="index.php" class="logo">
                 <i class="fa-solid fa-book-open"></i>
                 <span>Library System</span>
             </a>
@@ -23,7 +23,7 @@
                 </button>
             </div>
 
-            <a href="#" class="login-btn">
+            <a href="../../auth/register.php" class="login-btn">
                 <i class="fa-solid fa-right-to-bracket"></i>
                 Login
             </a>
@@ -60,14 +60,7 @@
                         <a href="#" class="nav-link">
                             <i class="fa-solid fa-hand-holding-heart"></i>
                             My Borrowed Books
-                            <!-- <i class="fa-solid fa-chevron-down dropdown-arrow"></i> -->
                         </a>
-                        <!-- <div class="dropdown-content">
-                            <a href="#"><i class="fa-solid fa-paper-plane"></i> Borrow Request</a>
-                            <a href="#"><i class="fa-solid fa-rotate-left"></i> Return Book</a>
-                            <a href="#"><i class="fa-solid fa-arrows-rotate"></i> Renew Book</a>
-                            <a href="#"><i class="fa-solid fa-tasks"></i> Track Status</a>
-                        </div> -->
                     </li>
 
                     <li class="nav-item">
@@ -77,35 +70,6 @@
                         </a>
                     </li>
 
-                    <!-- <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fa-solid fa-users-gear"></i>
-                            Management
-                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
-                        </a>
-                        <div class="dropdown-content">
-                            <a href="#"><i class="fa-solid fa-plus-circle"></i> Book CRUD</a>
-                            <a href="#"><i class="fa-solid fa-tags"></i> Category CRUD</a>
-                            <a href="#"><i class="fa-solid fa-users"></i> Reader List</a>
-                            <a href="#"><i class="fa-solid fa-check-circle"></i> Confirm Borrow</a>
-                            <a href="#"><i class="fa-solid fa-ban"></i> Block/Unblock</a>
-                            <a href="#"><i class="fa-solid fa-triangle-exclamation"></i> Overdue Management</a>
-                        </div>
-                    </li> -->
-
-                    <!-- <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fa-solid fa-chart-bar"></i>
-                            Reports
-                            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
-                        </a>
-                        <div class="dropdown-content">
-                            <a href="#"><i class="fa-solid fa-file-alt"></i> Borrowing Report</a>
-                            <a href="#"><i class="fa-solid fa-chart-line"></i> Popular Books</a>
-                            <a href="#"><i class="fa-solid fa-warehouse"></i> Inventory Report</a>
-                        </div>
-                    </li> -->
-
                     <li class="nav-item">
                         <a href="#" class="nav-link">
                             <i class="fa-solid fa-user-circle"></i>
@@ -114,6 +78,7 @@
                         </a>
                         <div class="dropdown-content">
                             <a href="#"><i class="fa-solid fa-user"></i> My Profile</a>
+                            <a href="<?= url('index.php?action=register') ?>"><i class="fa-solid fa-user"></i> Register</a>
                             <a href="#"><i class="fa-solid fa-key"></i> Change Password</a>
                         </div>
                     </li>
