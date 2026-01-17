@@ -1,6 +1,7 @@
 <?php
-<<<<<<< HEAD
-require_once '../config/config.php';
+require_once '../app/config/config.php';
+require_once '../app/core/Database.php';
+require_once '../app/core/Controller.php';
 require_once '../app/core/Router.php';
 
 $router = new Router();
@@ -8,11 +9,6 @@ $router = new Router();
 // ===== ROUTE DEVELOP =====
 $router->get('/', 'BookController', 'index');
 $router->get('/books', 'BookController', 'index');
-$router->get('/books/:id', 'BookController', 'show');
-$router->post('/books', 'BookController', 'store');
-$router->get('/books/:id/edit', 'BookController', 'edit');
-$router->put('/books/:id', 'BookController', 'update');
-$router->delete('/books/:id', 'BookController', 'delete');
 
 // ===== ROUTE LOGIN =====
 $router->get('/auth', 'AuthController', 'loginForm');
@@ -23,18 +19,3 @@ $router->get('/dashboard', 'DashboardController', 'index');
 
 // ===== RUN =====
 $router->dispatch();
-=======
-
-require_once '../app/config/config.php';
-require_once '../app/core/Database.php';
-require_once '../app/core/Controller.php';
-
-
-require_once('../app/controllers/BookController.php');
-
-
-$bookController = new BookController();
-$bookController->index();
-
-?>
->>>>>>> origin/feature/book-listing

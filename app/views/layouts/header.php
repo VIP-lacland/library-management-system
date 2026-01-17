@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../../public/css/header.css">
+    <link rel="stylesheet" href="<?php echo URL_ROOT; ?>/css/header.css">
     <title>Library Management System</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -23,10 +23,8 @@
                 </button>
             </div>
 
-            <a href="#" class="login-btn">
-                <i class="fa-solid fa-right-to-bracket"></i>
-                Login
-            </a>
+            <a href="<?php echo URL_ROOT; ?>/auth">
+                <i class="fa-solid fa-right-to-bracket"></i>  Login</a>
         </div>
 
         <!-- Navigation Bar -->
@@ -38,14 +36,12 @@
                 
                 <ul class="nav-menu" id="navMenu">
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fa-solid fa-house"></i>
-                            Home
-                        </a>
+                        <a href="<?php echo URL_ROOT; ?>/home" class="nav-link">
+                            <i class="fa-solid fa-house"></i>Home</a>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
+                        <a href="<?php echo URL_ROOT; ?>/books" class="nav-link">
                             <i class="fa-solid fa-book"></i>
                             Books
                             <!-- <i class="fa-solid fa-chevron-down dropdown-arrow"></i> -->
@@ -57,23 +53,23 @@
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fa-solid fa-hand-holding-heart"></i>
-                            My Borrowed Books
-                            <!-- <i class="fa-solid fa-chevron-down dropdown-arrow"></i> -->
-                        </a>
-                        <!-- <div class="dropdown-content">
-                            <a href="#"><i class="fa-solid fa-paper-plane"></i> Borrow Request</a>
-                            <a href="#"><i class="fa-solid fa-rotate-left"></i> Return Book</a>
-                            <a href="#"><i class="fa-solid fa-arrows-rotate"></i> Renew Book</a>
-                            <a href="#"><i class="fa-solid fa-tasks"></i> Track Status</a>
-                        </div> -->
+                    <a href="<?php echo URL_ROOT; ?>/borrowing" class="nav-link">
+                    <i class="fa-solid fa-hand-holding-heart"></i>
+                     My Borrowed Books
+                    </a>
+                    <div class="dropdown-content">
+                    <a href="<?php echo URL_ROOT; ?>/borrowing/requests">
+                    <i class="fa-solid fa-paper-plane"></i> Borrow Request
+                    </a>
+                    <a href="<?php echo URL_ROOT; ?>/borrowing/history">
+                    <i class="fa-solid fa-clock-rotate-left"></i> History
+                    </a>
+                    </div>
                     </li>
 
                     <li class="nav-item">
-                        <a href="#" class="nav-link">
-                            <i class="fa-solid fa-tags"></i>
-                            Categories
+                        <a href="<?php echo URL_ROOT; ?>/categories" class="nav-link">
+                        <i class="fa-solid fa-tags"></i> Categories
                         </a>
                     </li>
 
@@ -84,9 +80,12 @@
                             <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
                         </a>
                         <div class="dropdown-content">
-                            <a href="#"><i class="fa-solid fa-user"></i> My Profile</a>
-                            <a href="#"><i class="fa-solid fa-key"></i> Change Password</a>
-                        </div>
+                            <a href="<?php echo URL_ROOT; ?>/profile">
+                            <i class="fa-solid fa-user"></i> My Profile
+                            </a>
+                            <a href="<?php echo URL_ROOT; ?>/profile/change_password">
+                            <i class="fa-solid fa-key"></i> Change Password
+                            </a>
                     </li>
                 </ul>
             </div>
