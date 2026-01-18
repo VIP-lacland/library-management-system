@@ -3,7 +3,6 @@ if (!defined('BASE_URL')) {
     require_once __DIR__ . '/../../config/config.php';
 }
 ?>
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -99,34 +98,3 @@ if (!defined('BASE_URL')) {
         </nav>
     </header>
 
-
-    <script>
-        function toggleMenu() {
-            const navMenu = document.getElementById('navMenu');
-            navMenu.classList.toggle('active');
-        }
-
-        // Close menu when clicking outside
-        document.addEventListener('click', function(event) {
-            const navMenu = document.getElementById('navMenu');
-            const menuToggle = document.querySelector('.menu-toggle');
-            
-            if (!event.target.closest('nav') && navMenu.classList.contains('active')) {
-                navMenu.classList.remove('active');
-            }
-        });
-
-        // Handle dropdown on mobile
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', function(e) {
-                if (window.innerWidth <= 992) {
-                    if (this.querySelector('.dropdown-content')) {
-                        e.preventDefault();
-                        this.classList.toggle('active');
-                    }
-                }
-            });
-        });
-    </script>
-</body>
-</html>

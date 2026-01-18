@@ -13,6 +13,8 @@ if (!defined('BASE_URL')) {
     <link rel="stylesheet" href="<?= asset('css/home.css') ?>">
     <title>Home Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= asset('css/header.css') ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <?php require_once __DIR__ . '/layouts/header.php'; ?>
@@ -50,9 +52,36 @@ if (!defined('BASE_URL')) {
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
 
-<?php require_once __DIR__ . '/layouts/footer.php'; ?>
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (!event.target.closest('nav') && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Handle dropdown on mobile
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (window.innerWidth <= 992) {
+                    if (this.querySelector('.dropdown-content')) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                    }
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <?php require_once __DIR__ . '/layouts/footer.php'; ?>
+</body>
 
 </html>
