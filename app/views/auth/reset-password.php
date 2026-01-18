@@ -1,8 +1,13 @@
+<?php
+if (!defined('BASE_URL')) {
+    require_once __DIR__ . '/../../config/config.php';
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Đặt Lại Mật Khẩu</title>
-    <link rel="stylesheet" href="<?= URL_ROOT ?>/css/login.css">
+    <link rel="stylesheet" href="<?= asset('css/login.css') ?>">
     <style>
         .alert {
             padding: 12px 20px;
@@ -52,13 +57,13 @@
 
     <?php if (!empty($error)): ?>
         <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
-        <a class="back-link" href="<?= URL_ROOT ?>/forgot-password">← Thử lại</a>
+        <a class="back-link" href="<?= url('index.php?action=forgot-password') ?>">← Thử lại</a>
     <?php else: ?>
         <p class="info-text">
             Vui lòng nhập mật khẩu mới của bạn
         </p>
 
-        <form method="POST" action="<?= URL_ROOT ?>/reset-password?token=<?= htmlspecialchars($token) ?>">
+        <form method="POST" action="<?= url('index.php?action=reset-password&token=' . htmlspecialchars($token ?? '')) ?>">
             <div class="form-group">
                 <label for="password">Mật Khẩu Mới:</label>
                 <input type="password" id="password" name="password" placeholder="Nhập mật khẩu mới" required>
@@ -71,8 +76,7 @@
 
             <button type="submit">Đặt Lại Mật Khẩu</button>
         </form>
-
-        <a class="back-link" href="<?= URL_ROOT ?>/auth">← Quay lại Đăng Nhập</a>
+        <a class="back-link" href="<?= url('index.php?action=login') ?>">← Quay lại Đăng Nhập</a>
     <?php endif; ?>
 
 </div>

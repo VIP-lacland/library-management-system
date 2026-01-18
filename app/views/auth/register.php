@@ -3,7 +3,17 @@ if (!defined('BASE_URL')) {
   require_once __DIR__ . '/../../config/config.php';
 }
 ?>
-<link rel="stylesheet" href="../../../public/css/auth.css">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+<link rel="stylesheet" href="<?= asset('css/auth.css') ?>">
+  <title>Document</title>
+</head>
+<body>
+    
 
 <div class="container mt-5">
   <div class="row justify-content-center">
@@ -24,12 +34,13 @@ if (!defined('BASE_URL')) {
             <?php unset($_SESSION['flash']['errors']); ?>
           <?php endif; ?>
 
-          <?php if (isset($_SESSION['flash']['success'])): ?>
+          <!-- <?php if (isset($_SESSION['flash']['success'])): ?>
             <div class="alert-success">
               <?= htmlspecialchars($_SESSION['flash']['success']) ?>
             </div>
             <?php unset($_SESSION['flash']['success']); ?>
-          <?php endif; ?>
+          <?php endif; ?> -->
+          <div class="alert-container"></div>
         </div>
 
         <form action="<?= url('index.php?action=register/process') ?>" method="POST">
@@ -63,20 +74,22 @@ if (!defined('BASE_URL')) {
           <div class="d-grid">
             <button type="submit" class="btn btn-primary">Register</button>
           </div>
-
         </form>
 
         <!-- Link đăng nhập -->
         <div class="text-center mt-3">
           <p>Already have an account? <a href="/login">Log in now</a></p>
         </div>
-
       </div>
     </div>
   </div>
 </div>
 </div>
-<script src="<?php asset("js/script.js") ?>"></script>
+</body>
+</html>
+<script src="<?= asset('js/script.js') ?>"></script>
 <?php
 unset($_SESSION['old']);
 ?>
+
+

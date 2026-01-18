@@ -1,45 +1,69 @@
 <?php
-
 require_once '../app/config/config.php';
-require_once '../app/core/Database.php';
 require_once '../app/core/Controller.php';
-require_once '../app/core/Router.php';
+require_once '../app/core/Database.php';
 
-/*
-|--------------------------------------------------------------------------
-| ROUTES
-|--------------------------------------------------------------------------
-*/
+require_once('../app/controllers/BookController.php');
+require_once('../app/controllers/AccountController.php');
+require_once('../app/controllers/AuthController.php');
 
-// ===== BOOK =====
-$router->get('/', 'BookController', 'index');
-$router->get('/books', 'BookController', 'index');
-$router->get('/books/:id', 'BookController', 'show');
-$router->post('/books', 'BookController', 'store');
-$router->get('/books/:id/edit', 'BookController', 'edit');
-$router->put('/books/:id', 'BookController', 'update');
-$router->delete('/books/:id', 'BookController', 'delete');
+// Get action from URL parameter, default to 'index' if not provided
+$action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
-// ===== AUTH =====
-$router->get('/login', 'AuthController', 'loginForm');
-$router->post('/login', 'AuthController', 'login');
-$router->get('/logout', 'AuthController', 'logout');
+$bookController = new BookController();
+$accountController = new AccountController();
+$authController = new AuthController();
 
-$router->get('/register', 'AuthController', 'registerForm');
-$router->post('/register', 'AuthController', 'register');
+// Route based on action parameter
+switch ($action) {
+    case 'index':
+    case '':
+        $bookController->index();
+        break;
+    case 'book-detail':
+        // select ID from query parameter
+        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
-$router->get('/forgot-password', 'AuthController', 'forgotPasswordForm');
-$router->post('/forgot-password', 'forgotPassword');
+        if ($id === null || $id <= 0) {
+            die('Invalid book ID');
+        }
 
-$router->get('/reset-password', 'AuthController', 'resetPasswordForm');
-$router->post('/reset-password', 'resetPassword');
-
-// ===== DASHBOARD =====
-$router->get('/dashboard', 'DashboardController', 'index');
-
-/*
-|--------------------------------------------------------------------------
-| RUN
-|--------------------------------------------------------------------------
-*/
-$router->dispatch();
+        $bookController->detail($id);
+        break;
+    case 'register':
+        $accountController->register();
+        break;
+    case 'register/process':
+        $accountController->registerProcess();
+        break;
+    case 'login':
+        // Check if POST request (login process) or GET request (login form)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $authController->login();
+        } else {
+            $authController->loginForm();
+        }
+        break;
+    case 'logout':
+        $authController->logout();
+        break;
+    case 'change-password':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $accountController->changePassword();
+        } else {
+            $accountController->changePasswordForm();
+        }
+        break;
+    case 'forgot-password':
+        // Check if POST request (process) or GET request (form)
+        $authController->forgotPassword();
+        break;
+    case 'reset-password':
+        // Check if POST request (process) or GET request (form)
+        $authController->resetPassword();
+        break;
+    default:
+        // Default to index page if action is not recognized
+        $bookController->index();
+        break;
+}

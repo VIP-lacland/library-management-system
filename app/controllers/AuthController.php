@@ -1,48 +1,55 @@
 <?php
 
-class AuthController {
-    private $userModel;
-
-    public function __construct() {
-        require_once APP_ROOT . '/app/models/User.php';
-        $this->userModel = new User();
+class AuthController extends Controller
+{
+    public function loginForm()
+    {
+        $this->view('auth/login');
     }
 
-    public function loginForm() {
-        require APP_ROOT . '/app/views/auth/login.php';
-    }
+    public function login()
+    {
+        if (!$this->isPost()) {
+            $this->redirect(url('index.php?action=login'));
+            return;
+        }
 
-    public function login() {
-        $email = $_POST['email'] ?? '';
-        $password = $_POST['password'] ?? '';
+        $email = $this->input('email');
+        $password = $this->input('password');
 
-        // Fake user để test
-        $correctEmail = "user@test.com";
-        $correctPassword = "123456";
+        $userModel = $this->model('User');
+        $user = $userModel->findByEmail($email);
 
-        if ($email === $correctEmail && $password === $correctPassword) {
-            $_SESSION['user'] = $email;
-            header("Location: " . URL_ROOT . "/dashboard");
-            exit;
+        if ($user && password_verify($password, $user['password'])) {
+            // Login successful
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['username'] = $user['name'];
+            $this->redirect(url('index.php?action=index'));
         } else {
-            $_SESSION['error'] = "Invalid username or password";
-            header("Location: " . URL_ROOT . "/auth");
-            exit;
+            // Login failed
+            $this->setFlash('error', 'Invalid email or password');
+            $this->redirect(url('index.php?action=login'));
         }
     }
 
-    public function logout() {
+    public function logout()
+    {
         session_destroy();
-        header("Location: " . URL_ROOT . "/auth");
-        exit;
+        $this->redirect(url('index.php?action=index'));
     }
 
-    public function forgotPassword() {
+    public function forgotPasswordForm()
+    {
+        $this->view('auth/forgot-password');
+    }
+
+    public function forgotPassword()
+    {
         $message = '';
         $error = '';
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $email = trim($_POST['email'] ?? '');
+        if ($this->isPost()) {
+            $email = trim($this->input('email'));
 
             if (empty($email)) {
                 $error = 'Vui lòng nhập địa chỉ email';
@@ -50,7 +57,8 @@ class AuthController {
                 $error = 'Địa chỉ email không hợp lệ';
             } else {
                 // Kiểm tra xem email có tồn tại trong hệ thống
-                $user = $this->userModel->getUserByEmail($email);
+                $userModel = $this->model('User');
+                $user = $userModel->getUserByEmail($email);
 
                 if (!$user) {
                     // Không hiển thị thông báo người dùng không tồn tại vì lý do bảo mật
@@ -60,9 +68,9 @@ class AuthController {
                     $token = bin2hex(random_bytes(32));
                     $expiresAt = date('Y-m-d H:i:s', strtotime('+1 hour'));
 
-                    if ($this->userModel->createPasswordReset($user->user_id, $email, $token, $expiresAt)) {
+                    if ($userModel->createPasswordReset($user->user_id, $email, $token, $expiresAt)) {
                         // Tạo liên kết reset
-                        $resetLink = URL_ROOT . '/reset-password?token=' . $token;
+                        $resetLink = url('index.php?action=reset-password&token=' . $token);
 
                         // Gửi email (trong production sử dụng PHPMailer hoặc SwiftMailer)
                         $subject = 'Đặt lại mật khẩu - Hệ thống quản lý thư viện';
@@ -88,20 +96,22 @@ class AuthController {
             }
         }
 
-        require APP_ROOT . '/app/views/auth/forgot-password.php';
+        $this->view('auth/forgot-password', ['message' => $message, 'error' => $error]);
     }
 
-    public function resetPassword() {
+    public function resetPassword()
+    {
         $token = $_GET['token'] ?? '';
         $message = '';
         $error = '';
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $password = $_POST['password'] ?? '';
-            $password_confirm = $_POST['password_confirm'] ?? '';
+        if ($this->isPost()) {
+            $password = $this->input('password');
+            $password_confirm = $this->input('password_confirm');
 
             // Kiểm tra token
-            $resetRecord = $this->userModel->getPasswordResetByToken($token);
+            $userModel = $this->model('User');
+            $resetRecord = $userModel->getPasswordResetByToken($token);
 
             if (!$resetRecord) {
                 $error = 'Token không hợp lệ hoặc đã hết hạn';
@@ -115,23 +125,40 @@ class AuthController {
                 // Hash mật khẩu và cập nhật
                 $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-                if ($this->userModel->updatePassword($resetRecord->user_id, $hashedPassword)) {
-                    $this->userModel->markResetTokenUsed($resetRecord->reset_id);
-                    $_SESSION['success'] = 'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập';
-                    header("Location: " . URL_ROOT . "/auth");
-                    exit;
+                if ($userModel->updatePassword($resetRecord->user_id, $hashedPassword)) {
+                    $userModel->markResetTokenUsed($resetRecord->reset_id);
+                    $this->setFlash('success', 'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập');
+                    $this->redirect(url('index.php?action=login'));
                 } else {
                     $error = 'Có lỗi xảy ra. Vui lòng thử lại sau';
                 }
             }
         } else {
             // Kiểm tra token khi tải trang
-            $resetRecord = $this->userModel->getPasswordResetByToken($token);
+            $userModel = $this->model('User');
+            $resetRecord = $userModel->getPasswordResetByToken($token);
             if (!$resetRecord) {
                 $error = 'Token không hợp lệ hoặc đã hết hạn';
             }
         }
 
-        require APP_ROOT . '/app/views/auth/reset-password.php';
+        $this->view('auth/reset-password', ['token' => $token, 'message' => $message, 'error' => $error]);
+    }
+
+    public function resetPasswordForm()
+    {
+        $token = $_GET['token'] ?? '';
+        $error = '';
+
+        // Kiểm tra token khi tải trang
+        if ($token) {
+            $userModel = $this->model('User');
+            $resetRecord = $userModel->getPasswordResetByToken($token);
+            if (!$resetRecord) {
+                $error = 'Token không hợp lệ hoặc đã hết hạn';
+            }
+        }
+
+        $this->view('auth/reset-password', ['token' => $token, 'error' => $error]);
     }
 }

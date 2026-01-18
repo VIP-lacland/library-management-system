@@ -45,6 +45,18 @@ class User
         ]);
     }
 
+    public function findByEmail($email) {
+        $stmt = $this->db->prepare("SELECT * FROM Users WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function findById($user_id) {
+        $stmt = $this->db->prepare("SELECT * FROM Users WHERE user_id = :user_id");
+        $stmt->execute(['user_id' => $user_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public function getUserByEmail(string $email): ?object
     {
         $stmt = $this->db->prepare(

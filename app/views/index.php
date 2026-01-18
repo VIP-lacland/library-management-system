@@ -1,5 +1,7 @@
 <?php
-require_once __DIR__ . '/../config/config.php';
+if (!defined('BASE_URL')) {
+    require_once __DIR__ . '/../../config/config.php';
+}
 ?>
 
 <!DOCTYPE html>
@@ -8,12 +10,12 @@ require_once __DIR__ . '/../config/config.php';
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../public/css/home.css">
+    <link rel="stylesheet" href="<?= asset('css/home.css') ?>">
     <title>Home Page</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
-<?php require_once __DIR__ . '/../views/layouts/header.php'; ?>
+<?php require_once __DIR__ . '/layouts/header.php'; ?>
 
 <body>
     <div class="container">
@@ -34,7 +36,7 @@ require_once __DIR__ . '/../config/config.php';
                                 </div>
 
                                 <div class="mt-auto">
-                                    <a href="#" class="btn btn-primary w-100">View Details</a>
+                                    <a href="<?= url('index.php?action=book-detail&id=' . $book['book_id']) ?>" class="btn btn-primary w-100">View Details</a>
                                 </div>
                             </div>
                         </div>
@@ -51,6 +53,6 @@ require_once __DIR__ . '/../config/config.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-<?php require_once __DIR__ . '/../views/layouts/footer.php'; ?>
+<?php require_once __DIR__ . '/layouts/footer.php'; ?>
 
 </html>

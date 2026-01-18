@@ -1,34 +1,19 @@
+<?php
+if (!defined('BASE_URL')) {
+    require_once __DIR__ . '/../../config/config.php';
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Quên Mật Khẩu</title>
-    <link rel="stylesheet" href="<?= URL_ROOT ?>/css/login.css">
-    <style>
-        .alert {
-            padding: 12px 20px;
-            margin-bottom: 20px;
-            border-radius: 4px;
-            font-size: 14px;
-        }
-
-        .alert-success {
-            background-color: #d4edda;
-            color: #155724;
-            border: 1px solid #c3e6cb;
-        }
-
-        .alert-error {
-            background-color: #f8d7da;
-            color: #721c24;
-            border: 1px solid #f5c6cb;
-        }
-    </style>
+    <title>Forgot Password</title>
+    <link rel="stylesheet" href="<?= asset('css/login.css') ?>">
 </head>
 <body>
 
 <div class="login-container">
 
-    <h2>Quên Mật Khẩu</h2>
+    <h2>Forgot Password</h2>
 
     <p class="info-text">
         Nhập địa chỉ email của bạn và chúng tôi sẽ giúp bạn đặt lại mật khẩu.
@@ -42,12 +27,12 @@
         <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
     <?php endif; ?>
 
-    <form method="POST" action="<?= URL_ROOT ?>/forgot-password">
+    <form method="POST" action="<?= url('index.php?action=forgot-password') ?>">
         <input type="email" name="email" placeholder="Nhập địa chỉ email của bạn" required>
         <button type="submit">Gửi Liên Kết Đặt Lại</button>
     </form>
 
-    <a class="back-link" href="<?= URL_ROOT ?>/auth">← Quay lại Đăng Nhập</a>
+    <a class="back-link" href="<?= url('index.php?action=login') ?>">← Quay lại Đăng Nhập</a>
 
 </div>
 
