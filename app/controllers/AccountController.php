@@ -4,7 +4,7 @@ class AccountController extends Controller
 {
     public function register()
     {
-        // nếu đăng nhập sẽ, chuyển về trang chủ
+        // If logged in, return to the home page
         if (isset($_SESSION['user_id'])) {
             $this->redirect(url('index.php'));
         }

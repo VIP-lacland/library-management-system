@@ -12,7 +12,7 @@ define('DB_NAME', 'library_management');
 // App Info
 define('APP_NAME', 'Library Management System');
 
-// URL - CHỈ CẦN SửA DUY NHẤT CHỖ NÀY
+// URL
 define('BASE_URL', 'http://localhost:3000/public');
 
 // Session

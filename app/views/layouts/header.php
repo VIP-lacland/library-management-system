@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -48,12 +48,7 @@
                         <a href="#" class="nav-link">
                             <i class="fa-solid fa-book"></i>
                             Books
-                            <!-- <i class="fa-solid fa-chevron-down dropdown-arrow"></i> -->
                         </a>
-                        <!-- <div class="dropdown-content">
-                            <a href="#"><i class="fa-solid fa-list"></i> Book Listing</a>
-                            <a href="#"><i class="fa-solid fa-info-circle"></i> Book Details</a>
-                        </div> -->
                     </li>
 
                     <li class="nav-item">
@@ -118,3 +113,5 @@
     </script>
 </body>
 </html>
+
+
