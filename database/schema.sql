@@ -165,6 +165,18 @@ INSERT INTO Loans (user_id, book_items_id, borrow_date, due_date, return_date, s
 (4, 13, '2025-11-25', '2025-12-09', '2025-12-08', 'returned'),
 (6, 16, '2025-12-01', '2025-12-15', '2025-12-14', 'returned');
 
+-- Tạo bảng Password Resets
+CREATE TABLE PasswordResets (
+    reset_id INT PRIMARY KEY AUTO_INCREMENT,
+    user_id INT NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    reset_token VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    expires_at TIMESTAMP NOT NULL,
+    is_used BOOLEAN DEFAULT FALSE,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE
+);
+
 -- Check inserted data
 SELECT 'Users' as Table_Name, COUNT(*) as Total FROM Users
 UNION ALL

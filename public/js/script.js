@@ -41,6 +41,7 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+/*
 // Validate form khi submit
 document.querySelector("form").addEventListener("submit", function (e) {
   e.preventDefault(); // Tạm dừng submit để validate
@@ -94,6 +95,7 @@ document.querySelector("form").addEventListener("submit", function (e) {
   // Nếu không có lỗi, submit form
   this.submit();
 });
+*/
 
 // Tự động ẩn thông báo sau 5 giây (nếu muốn)
 document.addEventListener("DOMContentLoaded", function () {

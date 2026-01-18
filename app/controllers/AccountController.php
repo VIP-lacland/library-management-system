@@ -6,7 +6,7 @@ class AccountController extends Controller
     {
         // If logged in, return to the home page
         if (isset($_SESSION['user_id'])) {
-            $this->redirect(url('index.php'));
+            $this->redirect(url('index.php?action=index'));
         }
         $this->view('auth/register');
     }
@@ -73,6 +73,72 @@ class AccountController extends Controller
             $this->setFlash('errors', ['Registration failed, please try again']);
             $this->redirect(url('index.php?action=register'));  
             exit();
+        }
+    }
+
+    public function changePasswordForm()
+    {
+        // Require user to be logged in
+        if (!$this->isLoggedIn()) {
+            $this->setFlash('error', 'Vui lòng đăng nhập để thực hiện chức năng này');
+            $this->redirect(url('index.php?action=login'));
+            return;
+        }
+
+        $this->view('account/change-password');
+    }
+
+    public function changePassword()
+    {
+        // Require user to be logged in and the request to be POST
+        if (!$this->isLoggedIn() || !$this->isPost()) {
+            $this->redirect(url('index.php?action=login'));
+            return;
+        }
+
+        $current_password = $this->input('current_password');
+        $new_password = $this->input('new_password');
+        $confirm_new_password = $this->input('confirm_new_password');
+        $user_id = $_SESSION['user_id'];
+        
+        $errors = [];
+
+        // --- Validation ---
+        if (empty($current_password) || empty($new_password) || empty($confirm_new_password)) {
+            $errors[] = "Vui lòng điền đầy đủ các trường thông tin.";
+        }
+        if (strlen($new_password) < 8) {
+            $errors[] = "Mật khẩu mới phải có ít nhất 8 ký tự.";
+        }
+        if ($new_password !== $confirm_new_password) {
+            $errors[] = "Mật khẩu mới và mật khẩu xác nhận không khớp.";
+        }
+
+        if (!empty($errors)) {
+            $this->setFlash('errors', $errors);
+            $this->redirect(url('index.php?action=change-password'));
+            return;
+        }
+
+        // --- Password Verification ---
+        $userModel = $this->model('User');
+        $user = $userModel->findById($user_id);
+
+        if (!$user || !password_verify($current_password, $user['password'])) {
+            $this->setFlash('errors', ['Mật khẩu hiện tại không chính xác.']);
+            $this->redirect(url('index.php?action=change-password'));
+            return;
+        }
+
+        // --- Update Password ---
+        $hashedPassword = password_hash($new_password, PASSWORD_BCRYPT);
+        if ($userModel->updatePassword($user_id, $hashedPassword)) {
+            $this->setFlash('success', 'Mật khẩu đã được thay đổi thành công.');
+            // Redirect to profile page or index
+            $this->redirect(url('index.php'));
+        } else {
+            $this->setFlash('errors', ['Đã có lỗi xảy ra. Vui lòng thử lại.']);
+            $this->redirect(url('index.php?action=change-password'));
         }
     }
 }

@@ -1,70 +1,134 @@
 <?php
 
-use LDAP\ResultEntry;
-
-class User extends Database
+class User
 {
-    private $db;
-
-    private $username;
-    private $password;
-    private $email;
-    private $phone;
-    private $address;
+    private PDO $db;
 
     public function __construct()
     {
         $this->db = Database::getInstance()->getConnection();
     }
 
-    public function emailExists($email)
+    /* =========================
+       USER BASIC
+    ========================== */
+
+    public function emailExists(string $email): bool
     {
-        try {
-            $stmt = $this->db->prepare("SELECT user_id FROM Users WHERE email = :email LIMIT 1");
-            $stmt->execute([':email' => $email]);
-            return $stmt->rowCount() > 0;
-        } catch (PDOException $e) {
-            error_log("Error checking email exists: " . $e->getMessage());
-            return false;
-        }
+        $stmt = $this->db->prepare(
+            "SELECT user_id FROM Users WHERE email = :email LIMIT 1"
+        );
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch() !== false;
     }
 
+    public function create(
+        string $username,
+        string $password,
+        string $email,
+        ?string $phone = null,
+        ?string $address = null
+    ): bool {
+        $sql = "INSERT INTO Users 
+                (name, password, email, phone, address, role, status)
+                VALUES 
+                (:name, :password, :email, :phone, :address, 'reader', 'active')";
 
-    public function create($username, $password, $email, $phone = null, $address = null)
-    {
-        try {
+        $stmt = $this->db->prepare($sql);
 
-            $sql = "INSERT INTO Users (name, password, email, phone, address, role, status) 
-                    VALUES (:name, :password, :email, :phone, :address, 'reader', 'active')";
-
-            $stmt = $this->db->prepare($sql);
-
-            // Mã hóa mật khẩu
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
-            return $stmt->execute([
-                ':name' => $username,
-                ':password' => $hashed_password,
-                ':email' => $email,
-                ':phone' => $phone,
-                ':address' => $address
-            ]);
-        } catch (PDOException $e) {
-            error_log("Error creating user: " . $e->getMessage());
-            return false;
-        }
+        return $stmt->execute([
+            'name'     => $username,
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'email'    => $email,
+            'phone'    => $phone,
+            'address'  => $address
+        ]);
     }
 
-    // select user by user_id
-    public function getUserByEmail($email)
+    public function findByEmail($email) {
+        $stmt = $this->db->prepare("SELECT * FROM Users WHERE email = :email");
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function findById($user_id) {
+        $stmt = $this->db->prepare("SELECT * FROM Users WHERE user_id = :user_id");
+        $stmt->execute(['user_id' => $user_id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getUserByEmail(string $email): ?object
     {
-        try {
-            $stmt = $this->db->prepare("SELECT * FROM Users WHERE email = :email LIMIT 1");
-            $stmt->execute([':email' => $email]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            error_log("Error getting user by email: " . $e->getMessage());
-            return null;
-        }
+        $stmt = $this->db->prepare(
+            "SELECT * FROM Users WHERE email = :email LIMIT 1"
+        );
+        $stmt->execute(['email' => $email]);
+        return $stmt->fetch(PDO::FETCH_OBJ) ?: null;
+    }
+
+    public function updatePassword(int $userId, string $hashedPassword): bool
+    {
+        $stmt = $this->db->prepare(
+            "UPDATE Users SET password = :password WHERE user_id = :user_id"
+        );
+
+        return $stmt->execute([
+            'password' => $hashedPassword,
+            'user_id'  => $userId
+        ]);
+    }
+
+    /* =========================
+       PASSWORD RESET
+    ========================== */
+
+    public function createPasswordReset(
+        int $userId,
+        string $email,
+        string $token,
+        string $expiresAt
+    ): bool {
+        $sql = "INSERT INTO PasswordResets
+                (user_id, email, reset_token, expires_at)
+                VALUES
+                (:user_id, :email, :token, :expires_at)";
+
+        $stmt = $this->db->prepare($sql);
+
+        return $stmt->execute([
+            'user_id'    => $userId,
+            'email'      => $email,
+            'token'      => $token,
+            'expires_at' => $expiresAt
+        ]);
+    }
+
+    public function getPasswordResetByToken(string $token): ?object
+    {
+        $sql = "SELECT * FROM PasswordResets
+                WHERE reset_token = :token
+                  AND is_used = 0
+                  AND expires_at > NOW()
+                LIMIT 1";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['token' => $token]);
+
+        return $stmt->fetch(PDO::FETCH_OBJ) ?: null;
+    }
+
+    public function markResetTokenUsed(int $resetId): bool
+    {
+        $stmt = $this->db->prepare(
+            "UPDATE PasswordResets SET is_used = 1 WHERE reset_id = :id"
+        );
+        return $stmt->execute(['id' => $resetId]);
+    }
+
+    public function deleteExpiredResets(): bool
+    {
+        return $this->db
+            ->prepare("DELETE FROM PasswordResets WHERE expires_at < NOW()")
+            ->execute();
     }
 }

@@ -5,13 +5,14 @@ require_once '../app/core/Database.php';
 
 require_once('../app/controllers/BookController.php');
 require_once('../app/controllers/AccountController.php');
+require_once('../app/controllers/AuthController.php');
 
 // Get action from URL parameter, default to 'index' if not provided
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
-
 $bookController = new BookController();
 $accountController = new AccountController();
+$authController = new AuthController();
 
 // Route based on action parameter
 switch ($action) {
@@ -34,6 +35,32 @@ switch ($action) {
         break;
     case 'register/process':
         $accountController->registerProcess();
+        break;
+    case 'login':
+        // Check if POST request (login process) or GET request (login form)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $authController->login();
+        } else {
+            $authController->loginForm();
+        }
+        break;
+    case 'logout':
+        $authController->logout();
+        break;
+    case 'change-password':
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $accountController->changePassword();
+        } else {
+            $accountController->changePasswordForm();
+        }
+        break;
+    case 'forgot-password':
+        // Check if POST request (process) or GET request (form)
+        $authController->forgotPassword();
+        break;
+    case 'reset-password':
+        // Check if POST request (process) or GET request (form)
+        $authController->resetPassword();
         break;
     default:
         // Default to index page if action is not recognized
