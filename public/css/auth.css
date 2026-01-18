@@ -37,7 +37,7 @@ body {
         0 8px 16px rgba(15, 23, 42, 0.08);
     border-radius: 16px;
     background: white;
-    padding: 40px 32px; /* ✅ Padding trực tiếp cho card */
+    padding: 40px 32px;
 }
 
 /* Header */
@@ -137,14 +137,14 @@ form {
     display: flex;
     flex-direction: column;
     gap: 22px;
-    padding: 0 !important; /* ✅ Bỏ padding của Bootstrap */
+    padding: 0 !important; 
 }
 
 /* Input box */
 .input_box {
     display: flex;
     flex-direction: column;
-    margin: 0 !important; /* ✅ Bỏ margin của Bootstrap */
+    margin: 0 !important; 
 }
 
 /* Label */
@@ -175,7 +175,7 @@ form {
 
 .input_box input:focus {
     outline: none !important;
-    border-color: #3b82f6 !important;
+    border-color: #4f46e5 !important;
     background-color: #ffffff !important;
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15) !important;
 }
@@ -200,7 +200,7 @@ form {
     height: 52px !important;
     width: 100% !important;
     border-radius: 10px !important;
-    background-color: #1d7af3 !important;
+    background-color: #4f46e5 !important;
     border: none !important;
     font-size: 15px !important;
     font-weight: 600 !important;
@@ -210,7 +210,7 @@ form {
 }
 
 .d-grid button:hover {
-    background-color: #1666d3 !important;
+    background-color: #4f46e5 !important;
     box-shadow: 0 10px 20px rgba(29, 122, 243, 0.3) !important;
     transform: translateY(-1px);
 }
@@ -233,14 +233,14 @@ form {
 }
 
 .text-center a {
-    color: #1d7af3;
+    color: #4f46e5;
     font-weight: 500;
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .text-center a:hover {
-    color: #1666d3;
+    color: #4f46e5;
     text-decoration: underline;
 }
 

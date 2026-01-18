@@ -1,9 +1,14 @@
+<?php
+if (!defined('BASE_URL')) {
+    require_once __DIR__ . '/../../config/config.php';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../../public/css/footer.css">
+    <link rel="stylesheet" href="<?= asset('css/footer.css') ?>">
     <title>Library Management System Footer</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -16,28 +21,28 @@
                     <div class="footer-logo">
                         <div class="logo-img">U</div>
                         <div class="logo-text">
-                            <h3>THƯ VIỆN ĐIỆN TỬ</h3>
+                            <h3>LIBRARY MANAGEMENT SYSTEM</h3>
                         </div>
                     </div>
                     <div class="footer-stats">
                         <div class="stat-item">
                             <div class="stat-number">1</div>
-                            <div class="stat-label">lượt online</div>
+                            <div class="stat-label">online visits</div>
                         </div>
                         <div class="stat-item">
                             <div class="stat-number">1</div>
-                            <div class="stat-label">tổng lượt truy cập</div>
+                            <div class="stat-label">total visits</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Tài liệu -->
                 <div class="footer-section">
-                    <h4>Tài liệu</h4>
+                    <h4>Document</h4>
                     <ul>
-                        <li><a href="#">Sách điện tử</a></li>
-                        <li><a href="#">Sách nói</a></li>
-                        <li><a href="#">Bài giảng điện tử</a></li>
+                        <li><a href="#">Books online</a></li>
+                        <li><a href="#">Audio books</a></li>
+                        <li><a href="#">Online lectures</a></li>
                         <li><a href="#">Album</a></li>
                         <li><a href="#">Video</a></li>
                     </ul>
@@ -45,9 +50,9 @@
 
                 <!-- Tin tức -->
                 <div class="footer-section">
-                    <h4>Tin tức</h4>
+                    <h4>News</h4>
                     <ul>
-                        <li><a href="#">Giới thiệu</a></li>
+                        <li><a href="#">Introduce</a></li>
                         <li><a href="#">Blog</a></li>
                     </ul>
                 </div>
