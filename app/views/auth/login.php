@@ -32,8 +32,8 @@ if (!defined('BASE_URL')) {
             <input type="password" name="password" placeholder="Password" required>
             <button type="submit">Login</button>
             <div class="auth-message">
-                <p>Bạn chưa có tài khoản?</p>
-                <a href="<?= url('index.php?action=register') ?>">Đăng ký ngay</a>
+                <p>Don't have an account yet?</p>
+                <a href="<?= url('index.php?action=register') ?>">Register now</a>
             </div>
         </form>
 

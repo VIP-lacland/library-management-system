@@ -38,7 +38,7 @@ class User
 
         return $stmt->execute([
             'name'     => $username,
-            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'password' => $password,
             'email'    => $email,
             'phone'    => $phone,
             'address'  => $address
@@ -66,14 +66,14 @@ class User
         return $stmt->fetch(PDO::FETCH_OBJ) ?: null;
     }
 
-    public function updatePassword(int $userId, string $hashedPassword): bool
+    public function updatePassword(int $userId, string $password): bool
     {
         $stmt = $this->db->prepare(
             "UPDATE Users SET password = :password WHERE user_id = :user_id"
         );
 
         return $stmt->execute([
-            'password' => $hashedPassword,
+            'password' => $password,
             'user_id'  => $userId
         ]);
     }

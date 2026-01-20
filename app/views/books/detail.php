@@ -19,13 +19,13 @@ require_once __DIR__ . '/../../config/config.php';
             <div class="book-header">
                 <h1><?php echo htmlspecialchars($book['title']); ?></h1>
                 <p class="author">
-                    <strong>Tác giả:</strong> <?php echo htmlspecialchars($book['author']); ?>
+                    <strong>Author:</strong> <?php echo htmlspecialchars($book['author']); ?>
                 </p>
             </div>
 
             <div class="book-info">
                 <div class="info">
-                    <strong>Thể loại:</strong>
+                    <strong>Category:</strong>
                     <span><?php echo htmlspecialchars($book['category_name'] ?? 'N/A'); ?></span>
                 </div>
 
@@ -35,18 +35,18 @@ require_once __DIR__ . '/../../config/config.php';
                 </div>
 
                 <div class="info">
-                    <strong>Năm xuất bản:</strong>
+                    <strong>Year of publication:</strong>
                     <span><?php echo htmlspecialchars($book['publish_year'] ?? 'N/A'); ?></span>
                 </div>
 
                 <p class="description">
-                    <strong>Mô tả:</strong><br>
+                    <strong>Describe:</strong><br>
                     <?php echo nl2br(htmlspecialchars($book['description'] ?? '')); ?>
                 </p>
 
                 <?php if (!empty($book['url'])): ?>
                     <div class="info">
-                        <strong>Link tham khảo:</strong>
+                        <strong>Reference links:</strong>
                         <span>
                             <a href="<?php echo htmlspecialchars($book['url']); ?>" 
                                target="_blank" rel="noopener noreferrer">
@@ -59,7 +59,7 @@ require_once __DIR__ . '/../../config/config.php';
 
             <?php if (!empty($statuses)): ?>
                 <div class="status">
-                    <h3>Tình trạng sách</h3>
+                    <h3>Book condition</h3>
                     <ul class="status-list">
                         <?php foreach ($statuses as $item): ?>
                             <li>
@@ -73,17 +73,17 @@ require_once __DIR__ . '/../../config/config.php';
 
             <div class="btn-group">
                 <a href="<?= BASE_URL ?>" class="btn btn-secondary">
-                    ← Quay lại danh sách
+                    ← Back to the list
                 </a>
             </div>
 
         <?php else: ?>
             <div class="alert alert-error">
-                <p>Không tìm thấy sách.</p>
+                <p>No books found.</p>
             </div>
             <div class="btn-group">
                 <a href="<?= BASE_URL ?> ?>" class="btn btn-secondary">
-                    ← Quay lại danh sách
+                    ← Back to the list
                 </a>
             </div>
         <?php endif; ?>

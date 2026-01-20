@@ -27,12 +27,14 @@ if (!defined('BASE_URL')) {
                 </button>
             </div>
 
-            <?php if (isset($_SESSION['user_id'])): ?>
+            <?php if (isset($_SESSION['user'])): ?>
                 <div class="user-menu">
-                    <span class="username">
-                        <i class="fa-solid fa-user"></i>
-                        Hello, <?= htmlspecialchars($_SESSION['username'] ?? '') ?>
-                    </span>
+                    <?php if ($_SESSION['user']['role'] === 'reader'): ?>
+                        <span class="username">
+                            <i class="fa-solid fa-user"></i>
+                            Hello, <?= htmlspecialchars($_SESSION['user']['username'] ?? '') ?>
+                        </span>
+                    <?php endif; ?>
                     <a href="<?= url('index.php?action=logout') ?>" class="logout-btn">
                         <i class="fa-solid fa-right-from-bracket"></i>
                         Logout

@@ -4,6 +4,15 @@ class AuthController extends Controller
 {
     public function loginForm()
     {
+        if (isset($_SESSION['user'])) {
+            if ($_SESSION['user']['role'] === 'admin') {
+                $this->redirect(url('index.php?action=admin/dashboard'));
+            } else {
+                $this->redirect(url('index.php?action=index'));
+            }
+            exit;
+        }
+
         $this->view('auth/login');
     }
 
@@ -20,16 +29,27 @@ class AuthController extends Controller
         $userModel = $this->model('User');
         $user = $userModel->findByEmail($email);
 
-        if ($user && password_verify($password, $user['password'])) {
-            // Login successful
-            $_SESSION['user_id'] = $user['user_id'];
-            $_SESSION['username'] = $user['name'];
-            $this->redirect(url('index.php?action=index'));
-        } else {
-            // Login failed
+        //validate input
+        if (!$user || $password !== $user['password']) {
             $this->setFlash('error', 'Invalid email or password');
             $this->redirect(url('index.php?action=login'));
+            exit;
         }
+
+         $_SESSION['user'] = [
+            'id' => $user['user_id'],
+            'username' => $user['name'],
+            'full_name' => $user['full_name'],
+            'email' => $user['email'],
+            'role' => $user['role'] 
+        ];
+
+        if ($user['role'] === 'admin') {
+            $this->redirect(url('admin.php?action=dashboard'));
+        } else {
+            $this->redirect(url('index.php?action=index'));
+        }
+        exit;
     }
 
     public function logout()
@@ -122,10 +142,8 @@ class AuthController extends Controller
             } elseif ($password !== $password_confirm) {
                 $error = 'Mật khẩu không khớp';
             } else {
-                // Hash mật khẩu và cập nhật
-                $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
-
-                if ($userModel->updatePassword($resetRecord->user_id, $hashedPassword)) {
+                // Cập nhật mật khẩu
+                if ($userModel->updatePassword($resetRecord->user_id, $password)) {
                     $userModel->markResetTokenUsed($resetRecord->reset_id);
                     $this->setFlash('success', 'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập');
                     $this->redirect(url('index.php?action=login'));

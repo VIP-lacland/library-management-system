@@ -16,7 +16,7 @@ if (!defined('BASE_URL')) {
     <h2>Forgot Password</h2>
 
     <p class="info-text">
-        Nhập địa chỉ email của bạn và chúng tôi sẽ giúp bạn đặt lại mật khẩu.
+        Enter your email address and we'll help you reset your password.
     </p>
 
     <?php if (!empty($message)): ?>
@@ -29,10 +29,10 @@ if (!defined('BASE_URL')) {
 
     <form method="POST" action="<?= url('index.php?action=forgot-password') ?>">
         <input type="email" name="email" placeholder="Nhập địa chỉ email của bạn" required>
-        <button type="submit">Gửi Liên Kết Đặt Lại</button>
+        <button type="submit">Send Reset Link</button>
     </form>
 
-    <a class="back-link" href="<?= url('index.php?action=login') ?>">← Quay lại Đăng Nhập</a>
+    <a class="back-link" href="<?= url('index.php?action=login') ?>">← Go back to Login</a>
 
 </div>
 

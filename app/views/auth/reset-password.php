@@ -6,7 +6,7 @@ if (!defined('BASE_URL')) {
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Đặt Lại Mật Khẩu</title>
+    <title>Reset Password</title>
     <link rel="stylesheet" href="<?= asset('css/login.css') ?>">
     <style>
         .alert {
@@ -53,30 +53,30 @@ if (!defined('BASE_URL')) {
 
 <div class="login-container">
 
-    <h2>Đặt Lại Mật Khẩu</h2>
+    <h2>Reset Password</h2>
 
     <?php if (!empty($error)): ?>
         <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
         <a class="back-link" href="<?= url('index.php?action=forgot-password') ?>">← Thử lại</a>
     <?php else: ?>
         <p class="info-text">
-            Vui lòng nhập mật khẩu mới của bạn
+            Please enter your new password
         </p>
 
         <form method="POST" action="<?= url('index.php?action=reset-password&token=' . htmlspecialchars($token ?? '')) ?>">
             <div class="form-group">
-                <label for="password">Mật Khẩu Mới:</label>
+                <label for="password">New Password:</label>
                 <input type="password" id="password" name="password" placeholder="Nhập mật khẩu mới" required>
             </div>
 
             <div class="form-group">
-                <label for="password_confirm">Xác Nhận Mật Khẩu:</label>
+                <label for="password_confirm">Confirm Password:</label>
                 <input type="password" id="password_confirm" name="password_confirm" placeholder="Xác nhận mật khẩu" required>
             </div>
 
-            <button type="submit">Đặt Lại Mật Khẩu</button>
+            <button type="submit">Reset Password</button>
         </form>
-        <a class="back-link" href="<?= url('index.php?action=login') ?>">← Quay lại Đăng Nhập</a>
+        <a class="back-link" href="<?= url('index.php?action=login') ?>">← Go back to Login</a>
     <?php endif; ?>
 
 </div>

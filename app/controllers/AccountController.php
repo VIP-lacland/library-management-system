@@ -124,15 +124,14 @@ class AccountController extends Controller
         $userModel = $this->model('User');
         $user = $userModel->findById($user_id);
 
-        if (!$user || !password_verify($current_password, $user['password'])) {
+        if (!$user || $current_password !== $user['password']) {
             $this->setFlash('errors', ['Mật khẩu hiện tại không chính xác.']);
             $this->redirect(url('index.php?action=change-password'));
             return;
         }
 
         // --- Update Password ---
-        $hashedPassword = password_hash($new_password, PASSWORD_BCRYPT);
-        if ($userModel->updatePassword($user_id, $hashedPassword)) {
+        if ($userModel->updatePassword($user_id, $new_password)) {
             $this->setFlash('success', 'Mật khẩu đã được thay đổi thành công.');
             // Redirect to profile page or index
             $this->redirect(url('index.php'));

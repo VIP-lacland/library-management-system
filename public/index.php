@@ -3,16 +3,38 @@ require_once '../app/config/config.php';
 require_once '../app/core/Controller.php';
 require_once '../app/core/Database.php';
 
+// User Controllers
 require_once('../app/controllers/BookController.php');
 require_once('../app/controllers/AccountController.php');
 require_once('../app/controllers/AuthController.php');
 
+
+// Admin Controllers
+// require_once('../app/controllers/admin/AdminController.php');
+// require_once('../app/controllers/admin/BookController.php');
+// require_once('../app/controllers/admin/CategoryController.php');
+// require_once('../app/controllers/admin/DashboardController.php');
+// require_once('../app/controllers/admin/BorrowingController.php');
+// require_once('../app/controllers/admin/UserController.php');
+
+
 // Get action from URL parameter, default to 'index' if not provided
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
+// Initialize user controllers
 $bookController = new BookController();
 $accountController = new AccountController();
 $authController = new AuthController();
+
+
+// Initialize admin controller 
+// $adminController = new AdminController();
+// $bookController = new AdminBookController();
+// $categoryController = new CategoryController();
+// $dashboardController = new DashboardController();
+// $borrowingController = new BorrowingController();
+// $userController = new AdminUserController();
+
 
 // Route based on action parameter
 switch ($action) {
@@ -67,3 +89,5 @@ switch ($action) {
         $bookController->index();
         break;
 }
+
+

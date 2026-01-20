@@ -41,62 +41,6 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-/*
-// Validate form khi submit
-document.querySelector("form").addEventListener("submit", function (e) {
-  e.preventDefault(); // Tạm dừng submit để validate
-
-  // Xóa thông báo cũ
-  clearAlerts();
-
-  // Lấy giá trị từ form
-  const username = document.getElementById("username").value.trim();
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
-  const confirmPassword = document.getElementById("confirm_password").value;
-
-  // Mảng chứa lỗi
-  const errors = [];
-
-  // Validate username
-  if (username.length < 3) {
-    errors.push("Tên người dùng phải có ít nhất 3 ký tự");
-  }
-
-  // Validate email
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    errors.push("Email không hợp lệ");
-  }
-
-  // Validate password
-  if (password.length < 8) {
-    errors.push("Mật khẩu phải có ít nhất 8 ký tự");
-  }
-
-  // Validate confirm password
-  if (password !== confirmPassword) {
-    errors.push("Mật khẩu xác nhận không khớp");
-  }
-
-  // Nếu có lỗi, hiển thị
-  if (errors.length > 0) {
-    showErrors(errors);
-
-    // Scroll đến vị trí alert
-    document.querySelector(".alert-container").scrollIntoView({
-      behavior: "smooth",
-      block: "center",
-    });
-
-    return false;
-  }
-
-  // Nếu không có lỗi, submit form
-  this.submit();
-});
-*/
-
 // Tự động ẩn thông báo sau 5 giây (nếu muốn)
 document.addEventListener("DOMContentLoaded", function () {
   const alerts = document.querySelectorAll(".alert-danger, .alert-success");
