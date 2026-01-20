@@ -16,7 +16,7 @@ class Controller {
         if (file_exists($viewFile)) {
             require_once $viewFile;
         } else {
-            die("View không tồn tại: $viewName");
+            die("View does not exist: $viewName");
         }
     }
     
@@ -31,7 +31,7 @@ class Controller {
             require_once $modelFile;
             return new $modelName();
         } else {
-            die("Model không tồn tại: $modelName");
+            die("Model does not exist: $modelName");
         }
     }
     
@@ -75,13 +75,6 @@ class Controller {
     }
     
     /**
-     * Lấy tất cả input từ POST
-     */
-    protected function allInputs() {
-        return $_POST;
-    }
-    
-    /**
      * Set flash message
      */
     protected function setFlash($key, $message) {
@@ -104,7 +97,7 @@ class Controller {
      * Kiểm tra user đã đăng nhập chưa
      */
     protected function isLoggedIn() {
-        return isset($_SESSION['user_id']);
+        return isset($_SESSION['user']);
     }
     
     /**
@@ -112,7 +105,7 @@ class Controller {
      */
     protected function requireLogin() {
         if (!$this->isLoggedIn()) {
-            $this->setFlash('error', 'Vui lòng đăng nhập để tiếp tục');
+            $this->setFlash('error', 'Please log in to continue.');
             $this->redirect('/login');
         }
     }

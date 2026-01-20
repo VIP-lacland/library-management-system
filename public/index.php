@@ -27,15 +27,6 @@ $accountController = new AccountController();
 $authController = new AuthController();
 
 
-// Initialize admin controller 
-// $adminController = new AdminController();
-// $bookController = new AdminBookController();
-// $categoryController = new CategoryController();
-// $dashboardController = new DashboardController();
-// $borrowingController = new BorrowingController();
-// $userController = new AdminUserController();
-
-
 // Route based on action parameter
 switch ($action) {
     case 'index':

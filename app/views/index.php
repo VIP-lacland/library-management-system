@@ -64,7 +64,6 @@ if (!defined('BASE_URL')) {
         document.addEventListener('click', function(event) {
             const navMenu = document.getElementById('navMenu');
             const menuToggle = document.querySelector('.menu-toggle');
-
             if (!event.target.closest('nav') && navMenu.classList.contains('active')) {
                 navMenu.classList.remove('active');
             }

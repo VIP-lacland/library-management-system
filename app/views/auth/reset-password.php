@@ -57,27 +57,31 @@ if (!defined('BASE_URL')) {
 
     <?php if (!empty($error)): ?>
         <div class="alert alert-error"><?= htmlspecialchars($error) ?></div>
-        <a class="back-link" href="<?= url('index.php?action=forgot-password') ?>">← Thử lại</a>
-    <?php else: ?>
-        <p class="info-text">
-            Please enter your new password
-        </p>
-
-        <form method="POST" action="<?= url('index.php?action=reset-password&token=' . htmlspecialchars($token ?? '')) ?>">
-            <div class="form-group">
-                <label for="password">New Password:</label>
-                <input type="password" id="password" name="password" placeholder="Nhập mật khẩu mới" required>
-            </div>
-
-            <div class="form-group">
-                <label for="password_confirm">Confirm Password:</label>
-                <input type="password" id="password_confirm" name="password_confirm" placeholder="Xác nhận mật khẩu" required>
-            </div>
-
-            <button type="submit">Reset Password</button>
-        </form>
-        <a class="back-link" href="<?= url('index.php?action=login') ?>">← Go back to Login</a>
     <?php endif; ?>
+
+    <p class="info-text">
+        Enter your email and new password.
+    </p>
+
+    <form method="POST" action="<?= url('index.php?action=reset-password') ?>">
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" value="<?= htmlspecialchars($email ?? '') ?>" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password">New Password:</label>
+            <input type="password" id="password" name="password" placeholder="Enter new password" required>
+        </div>
+
+        <div class="form-group">
+            <label for="password_confirm">Confirm Password:</label>
+            <input type="password" id="password_confirm" name="password_confirm" placeholder="Confirm password" required>
+        </div>
+
+        <button type="submit">Reset Password</button>
+    </form>
+    <a class="back-link" href="<?= url('index.php?action=login') ?>">← Go back to Login</a>
 
 </div>
 

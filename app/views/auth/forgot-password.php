@@ -28,7 +28,7 @@ if (!defined('BASE_URL')) {
     <?php endif; ?>
 
     <form method="POST" action="<?= url('index.php?action=forgot-password') ?>">
-        <input type="email" name="email" placeholder="Nhập địa chỉ email của bạn" required>
+        <input type="email" name="email" placeholder="Enter your email address" required>
         <button type="submit">Send Reset Link</button>
     </form>
 

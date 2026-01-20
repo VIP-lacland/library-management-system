@@ -99,4 +99,3 @@ if (!defined('BASE_URL')) {
             </div>
         </nav>
     </header>
-

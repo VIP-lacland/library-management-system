@@ -72,17 +72,17 @@ class AuthController extends Controller
             $email = trim($this->input('email'));
 
             if (empty($email)) {
-                $error = 'Vui lòng nhập địa chỉ email';
+                $error = 'Enter your email';
             } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-                $error = 'Địa chỉ email không hợp lệ';
+                $error = 'Invalid email address';
             } else {
-                // Kiểm tra xem email có tồn tại trong hệ thống
+                // Check if the email exists in the system
                 $userModel = $this->model('User');
                 $user = $userModel->getUserByEmail($email);
 
                 if (!$user) {
-                    // Không hiển thị thông báo người dùng không tồn tại vì lý do bảo mật
-                    $message = 'Nếu email tồn tại trong hệ thống, bạn sẽ nhận được một liên kết đặt lại mật khẩu';
+                    // Do not reveal if the user exists for security reasons
+                    $message = 'If the email exists in our system, you will receive a password reset link';
                 } else {
                     // Tạo token reset
                     $token = bin2hex(random_bytes(32));
@@ -93,14 +93,14 @@ class AuthController extends Controller
                         $resetLink = url('index.php?action=reset-password&token=' . $token);
 
                         // Gửi email (trong production sử dụng PHPMailer hoặc SwiftMailer)
-                        $subject = 'Đặt lại mật khẩu - Hệ thống quản lý thư viện';
-                        $body = "Xin chào " . $user->name . ",\n\n";
-                        $body .= "Bạn đã yêu cầu đặt lại mật khẩu của mình.\n";
-                        $body .= "Nhấp vào liên kết bên dưới để đặt lại mật khẩu của bạn:\n\n";
+                        $subject = 'Reset Password – Library Management System';
+                        $body = "Hello " . $user->name . ",\n\n";
+                        $body .= "You have requested to reset your password.\n";
+                        $body .= "Click the link below to reset your password:\n\n";
                         $body .= $resetLink . "\n\n";
-                        $body .= "Liên kết này sẽ hết hạn trong 1 giờ.\n\n";
-                        $body .= "Nếu bạn không yêu cầu đặt lại mật khẩu, vui lòng bỏ qua email này.\n\n";
-                        $body .= "Trân trọng,\nHệ thống quản lý thư viện";
+                        $body .= "This link will expire in 1 hour.\n\n";
+                        $body .= "If you did not request a password reset, please ignore this email.\n\n";
+                        $body .= "Sincerely,\nLibrary Management System";
 
                         $headers = "From: noreply@library.com\r\n";
                         $headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
@@ -108,9 +108,9 @@ class AuthController extends Controller
                         // Thực hiện gửi email (bạn cần cấu hình SMTP hoặc sử dụng mail())
                         mail($email, $subject, $body, $headers);
 
-                        $message = 'Nếu email tồn tại trong hệ thống, bạn sẽ nhận được một liên kết đặt lại mật khẩu';
+                        $message = 'If the email exists in our system, you will receive a password reset link.';
                     } else {
-                        $error = 'Có lỗi xảy ra. Vui lòng thử lại sau';
+                        $error = 'An error occurred. Please try again later.';
                     }
                 }
             }
@@ -121,62 +121,47 @@ class AuthController extends Controller
 
     public function resetPassword()
     {
-        $token = $_GET['token'] ?? '';
-        $message = '';
-        $error = '';
-
         if ($this->isPost()) {
+            $email = $this->input('email');
             $password = $this->input('password');
             $password_confirm = $this->input('password_confirm');
 
-            // Kiểm tra token
+            $error = '';
             $userModel = $this->model('User');
-            $resetRecord = $userModel->getPasswordResetByToken($token);
+            $user = $userModel->findByEmail($email);
 
-            if (!$resetRecord) {
-                $error = 'Token không hợp lệ hoặc đã hết hạn';
+            if (!$user) {
+                $error = 'Email does not exist.';
+            } elseif ($user['role'] !== 'reader') {
+                $error = 'this feature is for reader only';
             } elseif (empty($password)) {
-                $error = 'Vui lòng nhập mật khẩu mới';
+                $error = 'Please enter a new password..';
             } elseif (strlen($password) < 6) {
-                $error = 'Mật khẩu phải có ít nhất 6 ký tự';
+                $error = 'Password must be at least 8 characters.';
             } elseif ($password !== $password_confirm) {
-                $error = 'Mật khẩu không khớp';
+                $error = 'Passwords do not match.';
             } else {
-                // Cập nhật mật khẩu
-                if ($userModel->updatePassword($resetRecord->user_id, $password)) {
-                    $userModel->markResetTokenUsed($resetRecord->reset_id);
-                    $this->setFlash('success', 'Mật khẩu đã được đặt lại thành công. Vui lòng đăng nhập');
+                if ($userModel->updatePassword($user['user_id'], $password)) {
+                    $this->setFlash('success', 'Password has been reset successfully. Please log in.');
                     $this->redirect(url('index.php?action=login'));
+                    return; // Exit after redirect
                 } else {
-                    $error = 'Có lỗi xảy ra. Vui lòng thử lại sau';
+                    $error = 'Something went wrong. Try again later.';
                 }
             }
-        } else {
-            // Kiểm tra token khi tải trang
-            $userModel = $this->model('User');
-            $resetRecord = $userModel->getPasswordResetByToken($token);
-            if (!$resetRecord) {
-                $error = 'Token không hợp lệ hoặc đã hết hạn';
-            }
-        }
+            
+            // Redisplay form with error
+            $this->view('auth/reset-password', ['error' => $error, 'email' => $email]);
 
-        $this->view('auth/reset-password', ['token' => $token, 'message' => $message, 'error' => $error]);
+        } else {
+            // Just show the form on GET request
+            $this->view('auth/reset-password');
+        }
     }
 
     public function resetPasswordForm()
     {
-        $token = $_GET['token'] ?? '';
-        $error = '';
-
-        // Kiểm tra token khi tải trang
-        if ($token) {
-            $userModel = $this->model('User');
-            $resetRecord = $userModel->getPasswordResetByToken($token);
-            if (!$resetRecord) {
-                $error = 'Token không hợp lệ hoặc đã hết hạn';
-            }
-        }
-
-        $this->view('auth/reset-password', ['token' => $token, 'error' => $error]);
+        // This form is now handled by resetPassword() on GET request.
+        $this->view('auth/reset-password');
     }
 }
