@@ -10,7 +10,7 @@ require_once('../app/controllers/AuthController.php');
 
 
 // Admin Controllers
-// require_once('../app/controllers/admin/AdminController.php');
+// require_once('../app/controllers/AdminController.php');
 // require_once('../app/controllers/admin/BookController.php');
 // require_once('../app/controllers/admin/CategoryController.php');
 // require_once('../app/controllers/admin/DashboardController.php');
@@ -75,10 +75,28 @@ switch ($action) {
         // Check if POST request (process) or GET request (form)
         $authController->resetPassword();
         break;
+    // --- ADMIN ROUTES ---
+    // case 'admin/borrowRequests':
+    //     $adminController->borrowRequests();
+    //     break;
+    // case 'admin/approveBorrowRequest':
+    //     // Lấy ID từ URL (cần xử lý logic lấy ID tốt hơn trong thực tế)
+    //     // Giả sử URL là index.php?action=admin/approveBorrowRequest&id=1
+    //     $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    //     $adminController->approveBorrowRequest($id);
+    //     break;
+    // case 'admin/rejectBorrowRequest':
+    //     $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+    //     $adminController->rejectBorrowRequest($id);
+    //     break;
+    // case 'admin/overdueLoans':
+    //     $adminController->overdueLoans();
+    //     break;
+    // case 'admin/allLoans':
+    //     $adminController->allLoans();
+    //     break;
     default:
         // Default to index page if action is not recognized
         $bookController->index();
         break;
 }
-
-

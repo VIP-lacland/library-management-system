@@ -64,7 +64,7 @@ CREATE TABLE Loans (
     borrow_date DATE NOT NULL,
     due_date DATE NOT NULL,
     return_date DATE,
-    status ENUM('borrowing', 'returned', 'overdue', 'renewal') NOT NULL DEFAULT 'borrowing',
+    status ENUM('pending', 'borrowing', 'returned', 'overdue', 'renewal', 'rejected') NOT NULL DEFAULT 'pending',
     FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE,
     FOREIGN KEY (book_items_id) REFERENCES Book_Items(book_items_id) ON DELETE CASCADE
 );
