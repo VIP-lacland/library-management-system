@@ -1,0 +1,165 @@
+:root {
+    --sidebar-width: 260px;
+    --sidebar-bg: #2c3e50;
+    --sidebar-color: #ecf0f1;
+    --sidebar-active-bg: #34495e;
+    --primary-color: #3498db;
+    --accent-color: #e74c3c;
+    --body-bg: #f8f9fa;
+}
+
+body {
+    overflow-x: hidden;
+    background-color: var(--body-bg);
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+/* --- Layout Wrapper --- */
+#wrapper {
+    display: flex;
+    width: 100%;
+    align-items: stretch;
+}
+
+/* --- Sidebar Styling --- */
+#sidebar-wrapper {
+    min-height: 100vh;
+    width: var(--sidebar-width);
+    margin-left: 0;
+    background-color: var(--sidebar-bg);
+    color: var(--sidebar-color);
+    transition: margin 0.25s ease-out;
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
+    z-index: 1000;
+}
+
+#sidebar-wrapper .sidebar-heading {
+    padding: 1.5rem 1.25rem;
+    font-size: 1.4rem;
+    font-weight: bold;
+    text-align: center;
+    background: rgba(0,0,0,0.1);
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+    color: #fff;
+}
+
+#sidebar-wrapper .list-group {
+    width: var(--sidebar-width);
+}
+
+#sidebar-wrapper .list-group-item {
+    background-color: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    border: none;
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+#sidebar-wrapper .list-group-item:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    padding-left: 1.75rem; /* Hiệu ứng trượt nhẹ khi hover */
+}
+
+#sidebar-wrapper .list-group-item.active {
+    background-color: var(--sidebar-active-bg);
+    color: #fff;
+    border-left-color: var(--primary-color);
+    font-weight: 600;
+}
+
+#sidebar-wrapper .list-group-item i {
+    width: 25px;
+    text-align: center;
+}
+
+/* --- Page Content --- */
+#page-content-wrapper {
+    width: 100%;
+    min-width: 0;
+}
+
+/* --- Toggle Logic --- */
+/* Desktop: Sidebar hiện, toggle sẽ ẩn */
+body.sb-sidenav-toggled #sidebar-wrapper {
+    margin-left: calc(-1 * var(--sidebar-width));
+}
+
+/* Mobile: Sidebar ẩn, toggle sẽ hiện */
+@media (max-width: 768px) {
+    #sidebar-wrapper {
+        margin-left: calc(-1 * var(--sidebar-width));
+    }
+    body.sb-sidenav-toggled #sidebar-wrapper {
+        margin-left: 0;
+    }
+}
+
+/* --- Components Styling --- */
+
+/* Navbar */
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background-color: #fff !important;
+}
+
+/* Cards */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #e3e6f0;
+    font-weight: 700;
+    padding: 1rem 1.25rem;
+}
+
+/* Tables */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background-color: #eaecf4;
+    color: #4e73df;
+    border-bottom: 2px solid #e3e6f0;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 1rem;
+}
+
+.table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    color: #5a5c69;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(78, 115, 223, 0.05);
+}
+
+/* Badges */
+.badge {
+    padding: 0.5em 0.75em;
+    font-weight: 600;
+    border-radius: 30px;
+}
+
+/* Buttons */
+.btn-sm {
+    border-radius: 5px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
