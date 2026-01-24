@@ -85,50 +85,58 @@ class User
     public function createPasswordReset(
         int $userId,
         string $email,
-        string $token,
-        string $expiresAt
     ): bool {
         $sql = "INSERT INTO PasswordResets
                 (user_id, email, reset_token, expires_at)
                 VALUES
-                (:user_id, :email, :token, :expires_at)";
+                (:user_id, :email, :expires_at)";
 
         $stmt = $this->db->prepare($sql);
 
         return $stmt->execute([
             'user_id'    => $userId,
             'email'      => $email,
-            'token'      => $token,
-            'expires_at' => $expiresAt
         ]);
     }
 
-    public function getPasswordResetByToken(string $token): ?object
-    {
-        $sql = "SELECT * FROM PasswordResets
-                WHERE reset_token = :token
-                  AND is_used = 0
-                  AND expires_at > NOW()
-                LIMIT 1";
 
-        $stmt = $this->db->prepare($sql);
-        $stmt->execute(['token' => $token]);
-
-        return $stmt->fetch(PDO::FETCH_OBJ) ?: null;
+//  ADMIN - USER MANAGEMENT
+    public function getAllUser() {
+        $stmt = $this->db->prepare("SELECT * FROM Users");
+        $stmt->execute();
+        return $stmt->fetchAll();
     }
 
-    public function markResetTokenUsed(int $resetId): bool
+    public function updateStatus(int $userId, string $status): bool
     {
         $stmt = $this->db->prepare(
-            "UPDATE PasswordResets SET is_used = 1 WHERE reset_id = :id"
+            "UPDATE Users SET status = :status WHERE user_id = :user_id"
         );
-        return $stmt->execute(['id' => $resetId]);
+
+        return $stmt->execute([
+            'status'  => $status,
+            'user_id' => $userId
+        ]);
     }
 
-    public function deleteExpiredResets(): bool
+
+    public function blockUser(int $userId): bool
     {
-        return $this->db
-            ->prepare("DELETE FROM PasswordResets WHERE expires_at < NOW()")
-            ->execute();
+        return $this->updateStatus($userId, 'block');
     }
+
+
+    public function unblockUser(int $userId): bool
+    {
+        return $this->updateStatus($userId, 'active');
+    }
+    
 }
+
+
+
+
+
+
+
+    

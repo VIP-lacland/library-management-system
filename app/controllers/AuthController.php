@@ -35,6 +35,12 @@ class AuthController extends Controller
             $this->redirect(url('index.php?action=login'));
             exit;
         }
+        
+        if ($user['role'] == 'reader' && $user['status'] != 'active') {
+            $this->setFlash('error', 'Your account is blocked');
+            $this->redirect(url('index.php?action=login'));
+            exit;
+        }
 
          $_SESSION['user'] = [
             'id' => $user['user_id'],
