@@ -1,6 +1,7 @@
 <?php
 
-
+require_once __DIR__ . '/../../models/Book.php'; 
+require_once __DIR__ . '/../../models/Category.php';
 
 class AdminBookController
 {
@@ -23,7 +24,7 @@ class AdminBookController
     public function index()
 {
     $books = $this->bookModel->getAllAdminBooks();
-    $viewFile = APP_ROOT . '/views/admin/book/index.php';
+    $viewFile = APP_ROOT . '/views/admin/book/list.php';
     
     
     echo "Đường dẫn thực tế là: " . $viewFile;

@@ -18,7 +18,7 @@ class CategoryController
     public function index()
     {
         $categories = $this->categoryModel->getAllCategories();
-        $viewFile = APP_ROOT . '/views/admin/categories/index.php';
+        $viewFile = APP_ROOT . '/views/admin/categories/list.php';
         require APP_ROOT . '/views/layouts/admin-layout.php';
 
     }
