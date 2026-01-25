@@ -57,7 +57,4 @@ switch ($action) {
     case 'borrow-return':
         $borrowingController->returnBook();
         break;
-    case 'borrow-export':
-        $borrowingController->export();
-        break;
     }

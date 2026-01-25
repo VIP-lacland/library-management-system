@@ -97,4 +97,51 @@ class Borrow {
         $stmt->execute(['keyword' => $keyword]);
         return $stmt->fetchAll();
     }
+
+    // Lấy danh sách phiếu mượn có phân trang và tìm kiếm
+    public function getLoansPaginated($limit, $offset, $keyword = '') {
+        $sql = "SELECT l.*, u.name as user_name, u.email, b.title as book_title, bi.barcode 
+                FROM Loans l
+                JOIN Users u ON l.user_id = u.user_id
+                JOIN Book_Items bi ON l.book_items_id = bi.book_items_id
+                JOIN Books b ON bi.book_id = b.book_id";
+        
+        if (!empty($keyword)) {
+            $sql .= " WHERE u.name LIKE :keyword OR u.email LIKE :keyword OR b.title LIKE :keyword OR bi.barcode LIKE :keyword";
+        }
+        
+        $sql .= " ORDER BY l.borrow_date DESC LIMIT :limit OFFSET :offset";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        if (!empty($keyword)) {
+            $stmt->bindValue(':keyword', "%$keyword%");
+        }
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    // Đếm tổng số phiếu mượn (để phân trang)
+    public function countLoans($keyword = '') {
+        $sql = "SELECT COUNT(*) as total 
+                FROM Loans l
+                JOIN Users u ON l.user_id = u.user_id
+                JOIN Book_Items bi ON l.book_items_id = bi.book_items_id
+                JOIN Books b ON bi.book_id = b.book_id";
+        
+        if (!empty($keyword)) {
+            $sql .= " WHERE u.name LIKE :keyword OR u.email LIKE :keyword OR b.title LIKE :keyword OR bi.barcode LIKE :keyword";
+        }
+        
+        $stmt = $this->db->prepare($sql);
+        if (!empty($keyword)) {
+            $stmt->bindValue(':keyword', "%$keyword%");
+        }
+        $stmt->execute();
+        $row = $stmt->fetch();
+        return $row ? $row['total'] : 0;
+    }
 }

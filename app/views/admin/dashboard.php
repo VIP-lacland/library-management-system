@@ -38,7 +38,7 @@
                                 </div>
                             </div>
                             <div class="card-footer bg-transparent border-0">
-                                <a href="#" onclick="return false;" class="text-white text-decoration-none small" style="cursor: not-allowed; opacity: 0.6;">Go to Books <i class="fas fa-arrow-right ms-1"></i></a>
+                                <a href="admin.php?action=book-list" class="text-white text-decoration-none small">Go to Books <i class="fas fa-arrow-right ms-1"></i></a>
                             </div>
                         </div>
                     </div>

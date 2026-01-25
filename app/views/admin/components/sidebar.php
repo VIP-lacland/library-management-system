@@ -7,7 +7,7 @@ $act = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
         <a class="list-group-item list-group-item-action p-3 <?= $act === 'dashboard' ? 'active' : '' ?>" href="admin.php?action=dashboard">
             <i class="fas fa-tachometer-alt me-2"></i> Dashboard
         </a>
-        <a class="list-group-item list-group-item-action p-3" href="#" onclick="return false;" style="cursor: not-allowed; opacity: 0.6;">
+        <a class="list-group-item list-group-item-action p-3 <?= strpos($act, 'book-') === 0 ? 'active' : '' ?>" href="admin.php?action=book-list">
             <i class="fas fa-book me-2"></i> Book Management
         </a>
         <a class="list-group-item list-group-item-action p-3" href="#" onclick="return false;" style="cursor: not-allowed; opacity: 0.6;">
