@@ -26,9 +26,7 @@ if (isset($viewFile) && file_exists($viewFile)) {
 }
 ?>
 
-    </div>
-
-</div>
+    
 
 </body>
 </html>

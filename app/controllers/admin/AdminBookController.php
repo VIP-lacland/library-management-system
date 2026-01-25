@@ -1,7 +1,4 @@
 <?php
-$viewFile = APP_ROOT . '/views/admin/books/index.php';
-require APP_ROOT . '/views/layouts/admin-layout.php';
-
 
 
 
@@ -26,9 +23,9 @@ class AdminBookController
     public function index()
 {
     $books = $this->bookModel->getAllAdminBooks();
-    $viewFile = APP_ROOT . '/views/admin/books/index.php';
+    $viewFile = APP_ROOT . '/views/admin/book/index.php';
     
-    // Thêm 2 dòng này để kiểm tra đường dẫn
+    
     echo "Đường dẫn thực tế là: " . $viewFile;
     if (!file_exists($viewFile)) { echo " -> FILE KHÔNG TỒN TẠI TẠI ĐÂY!"; }
     
