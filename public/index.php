@@ -1,65 +1,73 @@
+
+
 <?php
+session_start();
+
+
+
 require_once '../app/config/config.php';
 require_once '../app/core/Controller.php';
 require_once '../app/core/Database.php';
 
+
+
 // User Controllers
-require_once('../app/controllers/BookController.php');
+require_once('../app/controllers/admin/AdminBookController.php');
 require_once('../app/controllers/AccountController.php');
 require_once('../app/controllers/AuthController.php');
+require_once('../app/controllers/admin/CategoryController.php');
+require_once('../app/controllers/BookController.php');
 
 
-// Admin Controllers
-// require_once('../app/controllers/admin/AdminController.php');
-// require_once('../app/controllers/admin/BookController.php');
-// require_once('../app/controllers/admin/CategoryController.php');
-// require_once('../app/controllers/admin/DashboardController.php');
-// require_once('../app/controllers/admin/BorrowingController.php');
-// require_once('../app/controllers/admin/UserController.php');
-
-
-// Get action from URL parameter, default to 'index' if not provided
+// Get action from URL parameter
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
-// Initialize user controllers
-$bookController = new BookController();
+// Initialize controllers
+$bookController    = new BookController();
 $accountController = new AccountController();
-$authController = new AuthController();
+$authController    = new AuthController();
+$categoryController = new CategoryController();
+$adminBookController = new AdminBookController();
 
 
-// Route based on action parameter
+
+
+// Routing
 switch ($action) {
+
     case 'index':
     case '':
         $bookController->index();
         break;
-    case 'book-detail':
-        // select ID from query parameter
-        $id = isset($_GET['id']) ? intval($_GET['id']) : null;
 
-        if ($id === null || $id <= 0) {
+    case 'book-detail':
+        $id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+        if ($id <= 0) {
             die('Invalid book ID');
         }
-
         $bookController->detail($id);
         break;
+
     case 'register':
         $accountController->register();
         break;
+
     case 'register/process':
         $accountController->registerProcess();
         break;
+
     case 'login':
-        // Check if POST request (login process) or GET request (login form)
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $authController->login();
         } else {
             $authController->loginForm();
         }
         break;
+
     case 'logout':
         $authController->logout();
         break;
+
     case 'change-password':
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $accountController->changePassword();
@@ -67,18 +75,74 @@ switch ($action) {
             $accountController->changePasswordForm();
         }
         break;
+
     case 'forgot-password':
-        // Check if POST request (process) or GET request (form)
         $authController->forgotPassword();
         break;
+
     case 'reset-password':
-        // Check if POST request (process) or GET request (form)
         $authController->resetPassword();
         break;
+
+    // ================= CATEGORY CRUD (ADMIN) =================
+
+case 'categories':
+    $categoryController->index();
+    break;
+
+case 'category-create':
+    $categoryController->create();
+    break;
+
+case 'category-store':
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $categoryController->store();
+    }
+    break;
+
+case 'category-edit':
+    $categoryController->edit();
+    break;
+
+case 'category-update':
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        $categoryController->update();
+    }
+    break;
+
+case 'category-delete':
+    $categoryController->delete();
+    break;
+
+   case 'admin-books':
+    $adminBookController->index();
+    break;
+
+case 'admin-book-create':
+    $adminBookController->create();
+    break;
+
+case 'admin-book-store':
+    $adminBookController->store();
+    break;
+
+case 'admin-book-edit':
+    $adminBookController->edit();
+    break;
+
+case 'admin-book-update':
+    $adminBookController->update();
+    break;
+
+case 'admin-book-delete':
+    $adminBookController->delete();
+    break;
+
+
+
+
     default:
-        // Default to index page if action is not recognized
+        // Nếu action không tồn tại → quay về trang chủ
         $bookController->index();
         break;
 }
-
-
