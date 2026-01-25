@@ -7,29 +7,29 @@
         </div>
     <?php endif; ?>
 
-    <form action="index.php?action=admin-book-update" method="POST" enctype="multipart/form-data">
+    <form action="admin.php?action=admin-book-update" method="POST" enctype="multipart/form-data">
 
         <input type="hidden" name="id" value="<?= $book['book_id'] ?>">
         <input type="hidden" name="old_url" value="<?= $book['url'] ?>">
 
         <div class="mb-3">
             <label class="form-label">Title</label>
-            <input type="text" name="title" class="form-control" value="<?= $book['title'] ?>" required>
+            <input type="text" name="title" class="form-control" value="<?= htmlspecialchars($book['title']) ?>" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Author</label>
-            <input type="text" name="author" class="form-control" value="<?= $book['author'] ?>" required>
+            <input type="text" name="author" class="form-control" value="<?= htmlspecialchars($book['author']) ?>" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label">ISBN</label>
-            <input type="text" name="isbn" class="form-control" value="<?= $book['isbn'] ?>" required>
+            <input type="text" name="isbn" class="form-control" value="<?= htmlspecialchars($book['isbn']) ?>" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Publisher</label>
-            <input type="text" name="publisher" class="form-control" value="<?= $book['publisher'] ?>">
+            <input type="text" name="publisher" class="form-control" value="<?= htmlspecialchars($book['publisher']) ?>">
         </div>
 
         <div class="mb-3">
@@ -43,7 +43,7 @@
                 <?php foreach ($categories as $category): ?>
                     <option value="<?= $category['category_id'] ?>"
                         <?= $category['category_id'] == $book['category_id'] ? 'selected' : '' ?>>
-                        <?= $category['name'] ?>
+                        <?= htmlspecialchars($category['name']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
@@ -51,20 +51,25 @@
 
         <div class="mb-3">
             <label class="form-label">Description</label>
-            <textarea name="description" class="form-control" rows="4"><?= $book['description'] ?></textarea>
+            <textarea name="description" class="form-control" rows="4"><?= htmlspecialchars($book['description']) ?></textarea>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Current Cover</label><br>
-            <img src="<?= $book['url'] ?>" width="100" class="mb-2">
+            <?php if ($book['url']): ?>
+                <img src="<?= $book['url'] ?>" width="100" class="mb-2" style="border-radius: 4px; border: 1px solid #ddd;">
+            <?php else: ?>
+                <span class="text-muted">No image available</span>
+            <?php endif; ?>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Change Cover Image</label>
             <input type="file" name="image" class="form-control">
+            <small class="text-muted">Leave blank to keep current cover.</small>
         </div>
 
         <button type="submit" class="btn btn-primary">Update Book</button>
-        <a href="index.php?action=admin-books" class="btn btn-secondary">Cancel</a>
+        <a href="admin.php?action=admin-books" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

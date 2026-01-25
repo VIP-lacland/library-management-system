@@ -1,9 +1,7 @@
-
-
 <div class="container mt-4">
     <h2>Add New Book</h2>
 
-    <form method="POST" action="index.php?action=admin-book-store">
+    <form method="POST" action="admin.php?action=admin-book-store">
 
         <div class="mb-3">
             <label>Title</label>
@@ -13,6 +11,11 @@
         <div class="mb-3">
             <label>Author</label>
             <input type="text" name="author" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+            <label>ISBN</label>
+            <input type="text" name="isbn" class="form-control" required>
         </div>
 
         <div class="mb-3">
@@ -40,14 +43,13 @@
             <select name="category_id" class="form-control">
                 <?php foreach ($categories as $cat): ?>
                     <option value="<?= $cat['category_id'] ?>">
-                        <?= $cat['name'] ?>
+                        <?= htmlspecialchars($cat['name']) ?>
                     </option>
                 <?php endforeach; ?>
             </select>
         </div>
 
         <button type="submit" class="btn btn-success">Save Book</button>
-        <a href="index.php?action=admin-books" class="btn btn-secondary">Cancel</a>
+        <a href="admin.php?action=admin-books" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
-

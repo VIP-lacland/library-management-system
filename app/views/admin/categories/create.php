@@ -1,4 +1,3 @@
-
 <div class="container mt-4">
     <h2>Add New Category</h2>
 
@@ -8,18 +7,18 @@
         </div>
     <?php endif; ?>
 
-    <form action="index.php?action=category-store" method="POST">
+    <form action="admin.php?action=category-store" method="POST">
         <div class="mb-3">
             <label class="form-label">Category Name *</label>
-            <input type="text" name="name" class="form-control" required>
+            <input type="text" name="name" class="form-control" placeholder="Enter category name" required>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Description</label>
-            <textarea name="description" class="form-control"></textarea>
+            <textarea name="description" class="form-control" rows="3" placeholder="Enter description (optional)"></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary">Save</button>
-        <a href="index.php?action=category-list" class="btn btn-secondary">Cancel</a>
+        <a href="admin.php?action=categories" class="btn btn-secondary">Cancel</a>
     </form>
 </div>

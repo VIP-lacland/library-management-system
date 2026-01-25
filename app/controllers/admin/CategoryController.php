@@ -1,61 +1,60 @@
 <?php
 
-require_once APP_ROOT . '/models/Category.php';
-
-
-class CategoryController
+class CategoryController extends Controller
 {
-    private $categoryModel;
-
-    public function __construct()
-    {
-        $this->categoryModel = new Category();
-    }
-
     // ===============================
     // LIST
     // ===============================
     public function index()
     {
-        $categories = $this->categoryModel->getAllCategories();
-        $viewFile = APP_ROOT . '/views/admin/categories/list.php';
-        require APP_ROOT . '/views/layouts/admin-layout.php';
+        // Sử dụng $this->model theo format nhóm trưởng
+        $categoryModel = $this->model('Category');
+        $categories = $categoryModel->getAllCategories();
 
+        // Sử dụng $this->view thay vì require thủ công
+        $this->view('admin/categories/list', ['categories' => $categories]);
     }
 
     // ===============================
     // FORM CREATE
     // ===============================
     public function create()
-{
-    $viewFile = APP_ROOT . '/views/admin/categories/create.php';
-    require APP_ROOT . '/views/layouts/admin-layout.php';
-}
+    {
+        $this->view('admin/categories/create');
+    }
 
     // ===============================
     // STORE
     // ===============================
     public function store()
     {
-        $name = trim($_POST['name'] ?? '');
-        $description = trim($_POST['description'] ?? '');
+        if (!$this->isPost()) {
+            $this->redirect(url('admin.php?action=category-create'));
+            return;
+        }
+
+        $categoryModel = $this->model('Category');
+        
+        // Sử dụng $this->input thay vì $_POST
+        $name = trim($this->input('name') ?? '');
+        $description = trim($this->input('description') ?? '');
 
         if (empty($name)) {
-            $_SESSION['error'] = "Category name is required!";
-            header("Location: index.php?action=category-create");
+            $this->setFlash('error', "Category name is required!");
+            $this->redirect(url('admin.php?action=category-create'));
             exit;
         }
 
-        if ($this->categoryModel->isNameExists($name)) {
-            $_SESSION['error'] = "Category name already exists!";
-            header("Location: index.php?action=category-create");
+        if ($categoryModel->isNameExists($name)) {
+            $this->setFlash('error', "Category name already exists!");
+            $this->redirect(url('admin.php?action=category-create'));
             exit;
         }
 
-        $this->categoryModel->create($name, $description);
+        $categoryModel->create($name, $description);
 
-        $_SESSION['success'] = "Category created successfully!";
-        header("Location: index.php?action=categories");
+        $this->setFlash('success', "Category created successfully!");
+        $this->redirect(url('admin.php?action=categories'));
         exit;
     }
 
@@ -63,41 +62,46 @@ class CategoryController
     // FORM EDIT
     // ===============================
     public function edit()
-{
-    $id = $_GET['id'];
-    $category = $this->categoryModel->getById($id);
+    {
+        // Lấy ID từ input (GET)
+        $id = $this->input('id');
+        $categoryModel = $this->model('Category');
+        $category = $categoryModel->getById($id);
 
-    $viewFile = APP_ROOT . '/views/admin/categories/edit.php';
-    require APP_ROOT . '/views/layouts/admin-layout.php';
-}
-
+        $this->view('admin/categories/edit', ['category' => $category]);
+    }
 
     // ===============================
     // UPDATE
     // ===============================
     public function update()
     {
-        $id = intval($_POST['id'] ?? 0);
-        $name = trim($_POST['name'] ?? '');
-        $description = trim($_POST['description'] ?? '');
+        if (!$this->isPost()) {
+            $this->redirect(url('admin.php?action=categories'));
+            return;
+        }
+
+        $categoryModel = $this->model('Category');
+        $id = intval($this->input('id') ?? 0);
+        $name = trim($this->input('name') ?? '');
+        $description = trim($this->input('description') ?? '');
 
         if (empty($name)) {
-            $_SESSION['error'] = "Category name is required!";
-            header("Location: index.php?action=category-edit&id=$id");
+            $this->setFlash('error', "Category name is required!");
+            $this->redirect(url("admin.php?action=category-edit&id=$id"));
             exit;
         }
 
-        // Check trùng tên nhưng bỏ qua chính nó
-        if ($this->categoryModel->isNameExists($name, $id)) {
-            $_SESSION['error'] = "Category name already exists!";
-            header("Location: index.php?action=category-edit&id=$id");
+        if ($categoryModel->isNameExists($name, $id)) {
+            $this->setFlash('error', "Category name already exists!");
+            $this->redirect(url("admin.php?action=category-edit&id=$id"));
             exit;
         }
 
-        $this->categoryModel->update($id, $name, $description);
+        $categoryModel->update($id, $name, $description);
 
-        $_SESSION['success'] = "Category updated successfully!";
-        header("Location: index.php?action=categories");
+        $this->setFlash('success', "Category updated successfully!");
+        $this->redirect(url('admin.php?action=categories'));
         exit;
     }
 
@@ -106,18 +110,17 @@ class CategoryController
     // ===============================
     public function delete()
     {
-        $id = intval($_GET['id'] ?? 0);
+        $id = intval($this->input('id') ?? 0);
+        $categoryModel = $this->model('Category');
 
-        if ($this->categoryModel->hasBooks($id)) {
-            $_SESSION['error'] = "Cannot delete category that still has books!";
-            header("Location: index.php?action=categories");
-            exit;
+        if ($categoryModel->hasBooks($id)) {
+            $this->setFlash('error', "Cannot delete category that still has books!");
+        } else {
+            $categoryModel->delete($id);
+            $this->setFlash('success', "Category deleted successfully!");
         }
 
-        $this->categoryModel->delete($id);
-
-        $_SESSION['success'] = "Category deleted successfully!";
-        header("Location: index.php?action=categories");
+        $this->redirect(url('admin.php?action=categories'));
         exit;
     }
 }

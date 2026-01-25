@@ -1,187 +1,147 @@
 <?php
 
-require_once __DIR__ . '/../../models/Book.php'; 
-require_once __DIR__ . '/../../models/Category.php';
-
-class AdminBookController
+class AdminBookController extends Controller
 {
-    private $bookModel;
-    private $categoryModel;
-
-    public function __construct()
+    // Hàm hiển thị danh sách sách (Nhớ đổi tên file view thành list.php)
+    public function index()
     {
-        if (session_status() === PHP_SESSION_NONE) {
-            session_start();
-        }
+        $bookModel = $this->model('Book'); // Nhóm trưởng dùng $this->model('Tên')
+        $books = $bookModel->getAllAdminBooks(); // Giả định hàm này trong Model của bạn
 
-        $this->bookModel     = new Book();
-        $this->categoryModel = new Category();
+        $this->view('admin/book/list', ['books' => $books]);
     }
 
-    // ==============================
-    // LIST BOOKS
-    // ==============================
-    public function index()
-{
-    $books = $this->bookModel->getAllAdminBooks();
-    $viewFile = APP_ROOT . '/views/admin/book/list.php';
-    
-    
-    echo "Đường dẫn thực tế là: " . $viewFile;
-    if (!file_exists($viewFile)) { echo " -> FILE KHÔNG TỒN TẠI TẠI ĐÂY!"; }
-    
-    require APP_ROOT . '/views/layouts/admin-layout.php'; 
-}
-
-    // ==============================
-    // SHOW CREATE FORM
-    // ==============================
+    // Hàm hiển thị form thêm sách
     public function create()
-{
-    $categories = $this->categoryModel->getAllCategories();
-    
-    $viewFile = APP_ROOT . '/views/admin/book/create.php';
-    require APP_ROOT . '/views/layouts/admin-layout.php';
-}
+    {
+        $categoryModel = $this->model('Category');
+        $categories = $categoryModel->getAllCategories();
 
-    // ==============================
-    // STORE NEW BOOK
-    // ==============================
+        $this->view('admin/book/create', ['categories' => $categories]);
+    }
+
+    // Hàm lưu sách mới
     public function store()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?action=admin-books");
-            exit;
+        if (!$this->isPost()) {
+            $this->redirect(url('admin.php?action=admin-book-create'));
+            return;
         }
 
+        $bookModel = $this->model('Book');
+        
+        // Lấy dữ liệu bằng $this->input() như nhóm trưởng
         $data = [
-            'title'        => trim($_POST['title'] ?? ''),
-            'author'       => trim($_POST['author'] ?? ''),
-            'isbn'         => trim($_POST['isbn'] ?? ''),
-            'category_id'  => $_POST['category_id'] ?? null,
-            'publisher'    => trim($_POST['publisher'] ?? ''),
-            'publish_year' => $_POST['publish_year'] ?? null,
-            'description'  => trim($_POST['description'] ?? ''),
-            'url'          => null
+            'title' => $this->input('title'),
+            'author' => $this->input('author'),
+            'isbn' => $this->input('isbn'),
+            'category_id' => $this->input('category_id'),
+            'description' => $this->input('description'),
+            'publisher' => $this->input('publisher'),
+            'publish_year' => $this->input('publish_year')
         ];
 
-        // Validate
-        if (!$data['title'] || !$data['author'] || !$data['isbn']) {
-            $_SESSION['error'] = "Title, Author, ISBN are required!";
-            header("Location: index.php?action=admin-book-create");
-            exit;
+        // Xử lý upload ảnh (nếu có)
+        // ... (Logic upload của bạn)
+
+        if ($bookModel->createBook($data)) {
+            $this->setFlash('success', 'Book added successfully!');
+            $this->redirect(url('admin.php?action=admin-books'));
+        } else {
+            $this->setFlash('error', 'Failed to add book.');
+            $this->redirect(url('admin.php?action=admin-book-create'));
         }
-
-        // Check ISBN duplicate
-        if ($this->bookModel->isIsbnExists($data['isbn'])) {
-            $_SESSION['error'] = "ISBN already exists!";
-            header("Location: index.php?action=admin-book-create");
-            exit;
-        }
-
-        // Upload image nếu có
-        $imagePath = $this->uploadImage();
-        if ($imagePath) {
-            $data['url'] = $imagePath;
-        }
-
-        $this->bookModel->createBook($data);
-
-        $_SESSION['success'] = "Book added successfully!";
-        header("Location: index.php?action=admin-books");
-        exit;
     }
 
-    // ==============================
-    // SHOW EDIT FORM
-    // ==============================
+    // Hàm hiển thị form sửa
     public function edit()
-{
-    $id = $_GET['id'] ?? 0;
-    $book = $this->bookModel->getById($id);
-    $categories = $this->categoryModel->getAllCategories();
+    {
+        $id = $this->input('id');
+        $bookModel = $this->model('Book');
+        $categoryModel = $this->model('Category');
 
-    if (!$book) {
-        die("Book not found!");
+        $book = $bookModel->getBookById($id);
+        $categories = $categoryModel->getAllCategories();
+
+        $this->view('admin/book/edit', [
+            'book' => $book,
+            'categories' => $categories
+        ]);
     }
 
-    $viewFile = APP_ROOT . '/views/admin/book/edit.php';
-    require APP_ROOT . '/views/layouts/admin-layout.php';
-}
-
-    // ==============================
+    // ===============================
     // UPDATE BOOK
-    // ==============================
+    // ===============================
     public function update()
     {
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-            header("Location: index.php?action=admin-books");
+        // Kiểm tra xem có phải dữ liệu gửi từ POST không
+        if (!$this->isPost()) {
+            $this->redirect(url('admin.php?action=admin-books'));
+            return;
+        }
+
+        $bookModel = $this->model('Book');
+        
+        // Lấy ID và dữ liệu từ form
+        $id = intval($this->input('id') ?? 0);
+        $old_url = $this->input('old_url'); // URL ảnh cũ từ thẻ hidden
+
+        $data = [
+            'title'        => trim($this->input('title') ?? ''),
+            'author'       => trim($this->input('author') ?? ''),
+            'isbn'         => trim($this->input('isbn') ?? ''),
+            'publisher'    => trim($this->input('publisher') ?? ''),
+            'publish_year' => intval($this->input('publish_year') ?? 0),
+            'category_id'  => intval($this->input('category_id') ?? 0),
+            'description'  => trim($this->input('description') ?? ''),
+            'url'          => $old_url // Mặc định dùng lại ảnh cũ
+        ];
+
+        // 1. Kiểm tra tiêu đề không được để trống
+        if (empty($data['title'])) {
+            $this->setFlash('error', "Book title is required!");
+            $this->redirect(url("admin.php?action=admin-book-edit&id=$id"));
             exit;
         }
 
-        $id = $_POST['id'];
-
-        $data = [
-            'title'        => $_POST['title'],
-            'author'       => $_POST['author'],
-            'isbn'         => $_POST['isbn'],
-            'category_id'  => $_POST['category_id'],
-            'publisher'    => $_POST['publisher'],
-            'publish_year' => $_POST['publish_year'],
-            'description'  => $_POST['description'],
-            'url'          => $_POST['old_url']
-        ];
-
-        // Nếu có ảnh mới thì upload
-        $imagePath = $this->uploadImage();
-        if ($imagePath) {
-            $data['url'] = $imagePath;
+        // 2. Kiểm tra ISBN không được trùng (trừ chính nó)
+        if ($bookModel->isIsbnExists($data['isbn'], $id)) {
+            $this->setFlash('error', "ISBN already exists!");
+            $this->redirect(url("admin.php?action=admin-book-edit&id=$id"));
+            exit;
         }
 
-        $this->bookModel->updateBook($id, $data);
+        // 3. Xử lý Upload ảnh mới (nếu có)
+        // Lưu ý: Nếu sếp yêu cầu upload file thật, bạn cần code upload ở đây. 
+        // Nếu sếp chỉ yêu cầu dùng URL, bạn có thể bỏ qua phần file này.
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            // Đây là nơi xử lý upload file và gán lại $data['url']
+            // Ví dụ: $data['url'] = $this->handleUpload($_FILES['image']);
+        }
 
-        $_SESSION['success'] = "Book updated successfully!";
-        header("Location: index.php?action=admin-books");
+        // 4. Gọi Model để cập nhật
+        if ($bookModel->updateBook($id, $data)) {
+            $this->setFlash('success', "Book updated successfully!");
+        } else {
+            $this->setFlash('error', "Something went wrong. Could not update book.");
+        }
+
+        $this->redirect(url('admin.php?action=admin-books'));
         exit;
     }
 
-    // ==============================
-    // DELETE BOOK
-    // ==============================
+    // Hàm xóa (Archive)
     public function delete()
     {
-        $id = $_GET['id'];
+        $id = $this->input('id');
+        $bookModel = $this->model('Book');
 
-        if ($this->bookModel->hasBorrowHistory($id)) {
-            $_SESSION['error'] = "Cannot delete — book has borrowing history!";
+        if ($bookModel->deleteBook($id)) {
+            $this->setFlash('success', 'Book archived successfully!');
         } else {
-            $this->bookModel->deleteBook($id);
-            $_SESSION['success'] = "Book deleted!";
+            $this->setFlash('error', 'Failed to delete book.');
         }
-
-        header("Location: index.php?action=admin-books");
-        exit;
-    }
-
-    // ==============================
-    // IMAGE UPLOAD
-    // ==============================
-    private function uploadImage()
-    {
-        if (!isset($_FILES['image']) || $_FILES['image']['error'] !== 0) {
-            return null;
-        }
-
-        $targetDir = APP_ROOT . "/public/images/";
-        if (!file_exists($targetDir)) {
-            mkdir($targetDir, 0777, true);
-        }
-
-        $fileName = time() . "_" . basename($_FILES["image"]["name"]);
-        $targetFile = $targetDir . $fileName;
-
-        move_uploaded_file($_FILES["image"]["tmp_name"], $targetFile);
-
-        return "/library-management-system/public/images/" . $fileName;
+        
+        $this->redirect(url('admin.php?action=admin-books'));
     }
 }

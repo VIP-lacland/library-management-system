@@ -1,6 +1,6 @@
 <div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h2 class="page-title">📂 Category Management</h2>
-    <a href="index.php?action=category-create" class="btn btn-success" style="display: inline-flex; align-items: center; gap: 8px;">
+    <a href="admin.php?action=category-create" class="btn btn-success" style="display: inline-flex; align-items: center; gap: 8px;">
         <i class="fas fa-plus"></i> Add New Category
     </a>
 </div>
@@ -43,22 +43,22 @@
                         </td>
                         <td style="text-align: center;">
                             <span style="background: #eff6ff; color: #2563eb; padding: 4px 12px; border-radius: 12px; font-weight: 600; font-size: 12px; border: 1px solid #dbeafe;">
-                                <?= $cat['book_count'] ?? 0 ?>
+                                <?= $cat['total_books'] ?? 0 ?>
                             </span>
                         </td>
                         <td>
                             <div style="display: flex; gap: 10px; justify-content: center;">
-                                <a href="index.php?action=category-edit&id=<?= $cat['category_id'] ?>" 
+                                <a href="admin.php?action=category-edit&id=<?= $cat['category_id'] ?>" 
                                    class="btn btn-warning" 
                                    style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; min-width: 85px; justify-content: center; text-decoration: none;">
-                                    <i class="fas fa-edit"></i> Edit
+                                     <i class="fas fa-edit"></i> Edit
                                 </a>
 
-                                <a href="index.php?action=category-delete&id=<?= $cat['category_id'] ?>" 
+                                <a href="admin.php?action=category-delete&id=<?= $cat['category_id'] ?>" 
                                    class="btn btn-danger" 
                                    style="display: inline-flex; align-items: center; gap: 6px; padding: 6px 12px; min-width: 85px; justify-content: center; text-decoration: none;"
                                    onclick="return confirm('Are you sure you want to delete this category?');">
-                                    <i class="fas fa-trash"></i> Delete
+                                     <i class="fas fa-trash"></i> Delete
                                 </a>
                             </div>
                         </td>
