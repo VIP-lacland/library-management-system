@@ -39,6 +39,20 @@ require_once __DIR__ . '../../../../config/config.php';
                     </div>
                 <?php endif; ?>
 
+                <!-- Search Form -->
+                <form action="admin.php" method="GET" class="row g-2 mb-4">
+                    <input type="hidden" name="action" value="users">
+                    <div class="col-md-8">
+                        <input type="text" name="keyword" class="form-control" placeholder="Search by name or email..." value="<?= htmlspecialchars($keyword ?? '') ?>">
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-primary"><i class="fas fa-search"></i> Search</button>
+                        <?php if (!empty($keyword)): ?>
+                            <a href="admin.php?action=users" class="btn btn-secondary ms-1">Reset</a>
+                        <?php endif; ?>
+                    </div>
+                </form>
+
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <div class="table-responsive">
@@ -83,19 +97,19 @@ require_once __DIR__ . '../../../../config/config.php';
                                                 </td>
                                                 <td class="text-center">
                                                     <?php
-                                                    
+
                                                     $isAdmin = $user['role'] === 'admin';
                                                     ?>
 
                                                     <?php if (!$isAdmin): ?>
-                                                     
+
                                                         <?php if ($user['status'] === 'active'): ?>
                                                             <!-- Block Button -->
                                                             <form method="POST" action="admin.php?action=blockUser" style="display: inline;">
                                                                 <input type="hidden" name="user_id" value="<?= $user['user_id'] ?>">
-                                                                <button type="submit" class="btn btn-sm btn-danger" 
-                                                                        onclick="return confirm('Bạn có chắc muốn chặn người dùng <?= htmlspecialchars($user['name']) ?>?')"
-                                                                        title="Block User">
+                                                                <button type="submit" class="btn btn-sm btn-danger"
+                                                                    onclick="return confirm('Bạn có chắc muốn chặn người dùng <?= htmlspecialchars($user['name']) ?>?')"
+                                                                    title="Block User">
                                                                     <i class="fas fa-ban me-1"></i>Block
                                                                 </button>
                                                             </form>
@@ -103,9 +117,9 @@ require_once __DIR__ . '../../../../config/config.php';
                                                             <!-- Unblock Button -->
                                                             <form method="POST" action="admin.php?action=unblockUser" style="display: inline;">
                                                                 <input type="hidden" name="user_id" value="<?= $user['user_id'] ?>">
-                                                                <button type="submit" class="btn btn-sm btn-success" 
-                                                                        onclick="return confirm('Bạn có chắc muốn mở chặn người dùng <?= htmlspecialchars($user['name']) ?>?')"
-                                                                        title="Unblock User">
+                                                                <button type="submit" class="btn btn-sm btn-success"
+                                                                    onclick="return confirm('Bạn có chắc muốn mở chặn người dùng <?= htmlspecialchars($user['name']) ?>?')"
+                                                                    title="Unblock User">
                                                                     <i class="fas fa-check-circle me-1"></i>Unblock
                                                                 </button>
                                                             </form>
@@ -125,19 +139,54 @@ require_once __DIR__ . '../../../../config/config.php';
                         </div>
 
                         <!-- Pagination -->
-                        <nav aria-label="Page navigation" class="mt-3">
-                            <ul class="pagination justify-content-center">
-                                <li class="page-item disabled">
-                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
-                                </li>
-                                <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                                <li class="page-item">
-                                    <a class="page-link" href="#">Next</a>
-                                </li>
-                            </ul>
-                        </nav>
+                        <?php if (isset($totalPages) && $totalPages > 1): ?>
+                            <nav aria-label="Page navigation" class="mt-4">
+                                <ul class="pagination justify-content-center">
+                                    <!-- Previous Button -->
+                                    <li class="page-item <?= ($currentPage <= 1) ? 'disabled' : '' ?>">
+                                        <a class="page-link" href="admin.php?action=users&page=<?= $currentPage - 1 ?><?= !empty($keyword) ? '&keyword=' . urlencode($keyword) : '' ?>">
+                                            <i class="fas fa-chevron-left"></i> Previous
+                                        </a>
+                                    </li>
+
+                                    <?php
+                                    // Hiển thị trang đầu
+                                    if ($currentPage > 3) {
+                                        echo '<li class="page-item"><a class="page-link" href="admin.php?action=users&page=1' . (!empty($keyword) ? '&keyword=' . urlencode($keyword) : '') . '">1</a></li>';
+                                        if ($currentPage > 4) {
+                                            echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                                        }
+                                    }
+
+                                    // Hiển thị các trang xung quanh trang hiện tại
+                                    for ($i = max(1, $currentPage - 2); $i <= min($totalPages, $currentPage + 2); $i++):
+                                    ?>
+                                        <li class="page-item <?= ($i == $currentPage) ? 'active' : '' ?>">
+                                            <a class="page-link" href="admin.php?action=users&page=<?= $i ?><?= !empty($keyword) ? '&keyword=' . urlencode($keyword) : '' ?>">
+                                                <?= $i ?>
+                                            </a>
+                                        </li>
+                                    <?php endfor; ?>
+
+                                    <?php
+                                    // Hiển thị trang cuối
+                                    if ($currentPage < $totalPages - 2) {
+                                        if ($currentPage < $totalPages - 3) {
+                                            echo '<li class="page-item disabled"><span class="page-link">...</span></li>';
+                                        }
+                                        echo '<li class="page-item"><a class="page-link" href="admin.php?action=users&page=' . $totalPages . (!empty($keyword) ? '&keyword=' . urlencode($keyword) : '') . '">' . $totalPages . '</a></li>';
+                                    }
+                                    ?>
+
+                                    <!-- Next Button -->
+                                    <li class="page-item <?= ($currentPage >= $totalPages) ? 'disabled' : '' ?>">
+                                        <a class="page-link" href="admin.php?action=users&page=<?= $currentPage + 1 ?><?= !empty($keyword) ? '&keyword=' . urlencode($keyword) : '' ?>">
+                                            Next <i class="fas fa-chevron-right"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>

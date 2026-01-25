@@ -1,4 +1,4 @@
-﻿<?php
+﻿﻿<?php
 
 class Book
 {
@@ -16,6 +16,40 @@ class Book
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
 
+        return $stmt->fetchAll();
+    }
+
+    // Lấy sách theo phân trang
+    public function getBooksPaginated($limit, $offset)
+    {
+        $sql = "SELECT book_id, title, author, publisher, publish_year, description, url 
+                FROM Books 
+                ORDER BY book_id DESC
+                LIMIT :limit OFFSET :offset";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':limit', (int)$limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', (int)$offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
+    // Đếm tổng số sách
+    public function countTotalBooks()
+    {
+        $stmt = $this->db->query("SELECT COUNT(*) as total FROM Books");
+        $row = $stmt->fetch();
+        return $row ? $row['total'] : 0;
+    }
+
+    // Tìm kiếm sách
+    public function searchBooks($keyword)
+    {
+        $keyword = "%$keyword%";
+        $sql = "SELECT book_id, title, author, publisher, publish_year, description, url 
+                FROM Books 
+                WHERE title LIKE :keyword OR author LIKE :keyword OR publisher LIKE :keyword";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute(['keyword' => $keyword]);
         return $stmt->fetchAll();
     }
 

@@ -1,31 +1,54 @@
-<?php 
+<?php
 
-class AdminUserController extends Controller {
+class AdminUserController extends Controller
+{
 
     private $userModel;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->userModel = $this->model('User');
     }
 
-    public function getAllUser() {
+    public function getAllUser()
+    {
         if ($this->isPost()) {
             $this->redirect(url('admin.php?action=users'));
             return;
         }
-        // truy cập đến hàm getAllUser ở model
-        $users = $this->userModel->getAllUser();
+
+        $limit = 10;
+        $keyword = isset($_GET['keyword']) ? trim($_GET['keyword']) : '';
+        $currentPage = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+        $offset = ($currentPage - 1) * $limit;
+
+        $totalUsers = $this->userModel->getTotalUsers($keyword);
+        $totalPages = $totalUsers > 0 ? ceil($totalUsers / $limit) : 1;
+
+
+        if ($currentPage > $totalPages && $totalPages > 0) {
+            $currentPage = $totalPages;
+            $offset = ($currentPage - 1) * $limit;
+        }
+
+        $users = $this->userModel->getUsers($limit, $offset, $keyword);
 
         $data = [
             'users' => $users,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages,
+            'totalUsers' => $totalUsers,
+            'keyword' => $keyword,
             'message' => $this->getFlash('message'),
             'message_type' => $this->getFlash('message_type')
         ];
-        
+
         $this->view('admin/users/user-management', $data);
     }
 
-    public function validateUser() {
+
+    private function validateUser()
+    {
         $userId = isset($_POST['user_id']) ? (int)$_POST['user_id'] : 0;
 
         if ($userId <= 0) {
@@ -45,7 +68,15 @@ class AdminUserController extends Controller {
         return $user;
     }
 
-    public function blockUser() {
+
+    private function isAdminUser(array $user): bool
+    {
+        return isset($user['role']) && $user['role'] === 'admin';
+    }
+
+
+    public function blockUser()
+    {
         if (!$this->isPost()) {
             $this->redirect(url('admin.php?action=users'));
             return;
@@ -53,33 +84,30 @@ class AdminUserController extends Controller {
 
         $user = $this->validateUser();
         if (!$user) return;
-      
-        $user_id = $user['user_id'];
 
-        // check to can not block admin account
-        if (isset($user['role']) && $user['role'] === 'admin') {
+        if ($this->isAdminUser($user)) {
             $this->setFlash('message', 'Không thể chặn tài khoản Admin');
             $this->setFlash('message_type', 'error');
             $this->redirect(url('admin.php?action=users'));
             return;
         }
 
-        // do block user
+        $user_id = $user['user_id'];
         if ($this->userModel->blockUser($user_id)) {
-            $this->setFlash('message', 'Đã chặn người dùng thành công');
+            $this->setFlash('message', 'Đã chặn người dùng "' . htmlspecialchars($user['name']) . '" thành công');
             $this->setFlash('message_type', 'success');
         } else {
-            $this->setFlash('message', 'Không thể chặn người dùng');
+            $this->setFlash('message', 'Không thể chặn người dùng. Vui lòng thử lại');
             $this->setFlash('message_type', 'error');
         }
 
         $this->redirect(url('admin.php?action=users'));
     }
 
-    public function unblockUser() {
+
+    public function unblockUser()
+    {
         if (!$this->isPost()) {
-            $this->setFlash('message', 'Phương thức không hợp lệ');
-            $this->setFlash('message_type', 'error');
             $this->redirect(url('admin.php?action=users'));
             return;
         }
@@ -89,12 +117,11 @@ class AdminUserController extends Controller {
 
         $userId = $user['user_id'];
 
-        // do unblock user
         if ($this->userModel->unblockUser($userId)) {
-            $this->setFlash('message', 'Đã mở chặn người dùng thành công');
+            $this->setFlash('message', 'Đã mở chặn người dùng "' . htmlspecialchars($user['name']) . '" thành công');
             $this->setFlash('message_type', 'success');
         } else {
-            $this->setFlash('message', 'Không thể mở chặn người dùng');
+            $this->setFlash('message', 'Không thể mở chặn người dùng. Vui lòng thử lại');
             $this->setFlash('message_type', 'error');
         }
 

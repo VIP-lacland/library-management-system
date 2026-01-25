@@ -23,10 +23,10 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
 
 // Initialize controllers
 $dashboardController = new DashboardController();
-// $bookController = new AdminBookController();
+$bookController = new AdminBookController();
 $userController = new AdminUserController();
 // $categoryController = new AdminCategoryController();
-// $borrowingController = new AdminBorrowingController();
+$borrowingController = new BorrowingController();
 
 // Admin routing
 switch ($action) {
@@ -46,6 +46,30 @@ switch ($action) {
 
     case 'unblockUser':
         $userController->unblockUser();
+        break;
+
+    // Book Management
+    case 'book-list':
+        $bookController->index();
+        break;
+    // Borrowing Management
+    case 'borrow-list':
+        $borrowingController->index();
+        break;
+    case 'borrow-requests':
+        $borrowingController->requests();
+        break;
+    case 'borrow-overdue':
+        $borrowingController->overdue();
+        break;
+    case 'borrow-approve':
+        $borrowingController->approve();
+        break;
+    case 'borrow-reject':
+        $borrowingController->reject();
+        break;
+    case 'borrow-return':
+        $borrowingController->returnBook();
         break;
     default:
         $dashboardController->index();

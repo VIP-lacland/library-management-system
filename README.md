@@ -68,11 +68,11 @@ All members work as **full-stack developers**. Each member participates in both 
 ```
 project-root/
 ├── app/
+│   ├── config/             # Application configuration
 │   ├── controllers/        # Handle application logic
 │   ├── core/               # Core system files
 │   ├── models/             # Database models
 │   └── views/              # User interface
-├── config/                 # Application configuration
 ├── database/               # Database schema
 ├── public/                 # Public files (CSS, JS, index.php)
 ├── README.md

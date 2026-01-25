@@ -1,18 +1,3 @@
-<?php
-if (!defined('BASE_URL')) {
-    require_once __DIR__ . '/../../config/config.php';
-}
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="<?= asset('css/footer.css') ?>">
-    <title>Library Management System Footer</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-</head>
-<body>
     <footer>
         <div class="footer-container">
             <div class="footer-content">
@@ -77,5 +62,34 @@ if (!defined('BASE_URL')) {
             </div>
         </div>
     </footer>
+
+    <script>
+        function toggleMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const navMenu = document.getElementById('navMenu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            if (!event.target.closest('nav') && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        // Handle dropdown on mobile
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                if (window.innerWidth <= 992) {
+                    if (this.querySelector('.dropdown-content')) {
+                        e.preventDefault();
+                        this.classList.toggle('active');
+                    }
+                }
+            });
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

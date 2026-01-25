@@ -9,15 +9,6 @@ require_once('../app/controllers/AccountController.php');
 require_once('../app/controllers/AuthController.php');
 
 
-// Admin Controllers
-// require_once('../app/controllers/admin/AdminController.php');
-// require_once('../app/controllers/admin/BookController.php');
-// require_once('../app/controllers/admin/CategoryController.php');
-// require_once('../app/controllers/admin/DashboardController.php');
-// require_once('../app/controllers/admin/BorrowingController.php');
-// require_once('../app/controllers/admin/UserController.php');
-
-
 // Get action from URL parameter, default to 'index' if not provided
 $action = isset($_GET['action']) ? $_GET['action'] : 'index';
 
@@ -40,7 +31,6 @@ switch ($action) {
         if ($id === null || $id <= 0) {
             die('Invalid book ID');
         }
-
         $bookController->detail($id);
         break;
     case 'register':
@@ -68,17 +58,12 @@ switch ($action) {
         }
         break;
     case 'forgot-password':
-        // Check if POST request (process) or GET request (form)
         $authController->forgotPassword();
         break;
     case 'reset-password':
-        // Check if POST request (process) or GET request (form)
         $authController->resetPassword();
         break;
     default:
-        // Default to index page if action is not recognized
         $bookController->index();
         break;
 }
-
-

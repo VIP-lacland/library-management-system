@@ -79,33 +79,54 @@ class User
     }
 
     /* =========================
-       PASSWORD RESET
+       ADMIN - USER MANAGEMENT
     ========================== */
 
-    public function createPasswordReset(
-        int $userId,
-        string $email,
-    ): bool {
-        $sql = "INSERT INTO PasswordResets
-                (user_id, email, reset_token, expires_at)
-                VALUES
-                (:user_id, :email, :expires_at)";
+
+    public function getTotalUsers(string $keyword = ''): int
+    {
+        $sql = "SELECT COUNT(*) FROM Users";
+        $params = [];
+
+        if (!empty($keyword)) {
+            $sql .= " WHERE name LIKE :keyword OR email LIKE :keyword";
+            $params[':keyword'] = '%' . $keyword . '%';
+        }
 
         $stmt = $this->db->prepare($sql);
-
-        return $stmt->execute([
-            'user_id'    => $userId,
-            'email'      => $email,
-        ]);
+        $stmt->execute($params);
+        return (int)$stmt->fetchColumn();
     }
 
+    public function getUsers(int $limit, int $offset, string $keyword = ''): array
+    {
+        $sql = "SELECT * FROM Users";
+        $params = [];
 
-//  ADMIN - USER MANAGEMENT
-    public function getAllUser() {
-        $stmt = $this->db->prepare("SELECT * FROM Users");
+        if (!empty($keyword)) {
+            $sql .= " WHERE name LIKE :keyword OR email LIKE :keyword";
+            $params[':keyword'] = '%' . $keyword . '%';
+        }
+
+        $sql .= " ORDER BY 
+                  CASE WHEN role = 'admin' THEN 0 ELSE 1 END,
+                  user_id DESC 
+                  LIMIT :limit OFFSET :offset";
+        
+        $stmt = $this->db->prepare($sql);
+
+        // Bind keyword param if it exists
+        if (!empty($keyword)) {
+            $stmt->bindValue(':keyword', $params[':keyword']);
+        }
+
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+
         $stmt->execute();
-        return $stmt->fetchAll();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
 
     public function updateStatus(int $userId, string $status): bool
     {
@@ -125,18 +146,11 @@ class User
         return $this->updateStatus($userId, 'block');
     }
 
-
+    /**
+     * Mở chặn người dùng
+     */
     public function unblockUser(int $userId): bool
     {
         return $this->updateStatus($userId, 'active');
     }
-    
 }
-
-
-
-
-
-
-
-    
