@@ -39,7 +39,7 @@ class AdminBookController
 {
     $categories = $this->categoryModel->getAllCategories();
     
-    $viewFile = APP_ROOT . '/views/admin/books/create.php';
+    $viewFile = APP_ROOT . '/views/admin/book/create.php';
     require APP_ROOT . '/views/layouts/admin-layout.php';
 }
 
@@ -104,7 +104,7 @@ class AdminBookController
         die("Book not found!");
     }
 
-    $viewFile = APP_ROOT . '/views/admin/books/edit.php';
+    $viewFile = APP_ROOT . '/views/admin/book/edit.php';
     require APP_ROOT . '/views/layouts/admin-layout.php';
 }
 

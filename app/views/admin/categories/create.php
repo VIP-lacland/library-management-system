@@ -1,4 +1,3 @@
-<?php require_once __DIR__ . '/../../layouts/header.php'; ?>
 
 <div class="container mt-4">
     <h2>Add New Category</h2>
@@ -24,5 +23,3 @@
         <a href="index.php?action=category-list" class="btn btn-secondary">Cancel</a>
     </form>
 </div>
-
-<?php require_once __DIR__ . '/../../layouts/footer.php'; ?>

@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../../layouts/header.php'; ?>
+
 
 <div class="container mt-4">
     <h2>Edit Category</h2>
@@ -26,4 +26,4 @@
     </form>
 </div>
 
-<?php require_once __DIR__ . '/../../layouts/footer.php'; ?>
+

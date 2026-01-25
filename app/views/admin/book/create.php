@@ -1,4 +1,4 @@
-<?php require_once __DIR__ . '/../../layouts/header.php'; ?>
+
 
 <div class="container mt-4">
     <h2>Add New Book</h2>
@@ -51,4 +51,3 @@
     </form>
 </div>
 
-<?php require_once __DIR__ . '/../../layouts/footer.php'; ?>
