@@ -1,53 +1,60 @@
-<div class="container-fluid mt-4"> <div class="d-flex justify-content-between align-items-center mb-4">
-        <h2>📚 Book Management</h2>
-        <a href="index.php?action=admin-book-create" class="btn btn-success shadow-sm">+ Add New Book</a>
-    </div>
+<div class="page-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2 class="page-title">📚 Book Management</h2>
+    <a href="index.php?action=admin-book-create" class="btn btn-primary">+ Add New Book</a>
+</div>
 
-    <?php if (!empty($_SESSION['success'])): ?>
-        <div class="alert alert-success alert-dismissible fade show">
-            <?= $_SESSION['success']; unset($_SESSION['success']); ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-        </div>
-    <?php endif; ?>
+<?php if (!empty($_SESSION['success'])): ?>
+    <div class="alert alert-success"><?= $_SESSION['success']; unset($_SESSION['success']); ?></div>
+<?php endif; ?>
 
-    <div class="card shadow-sm">
-        <div class="card-body p-0">
-            <table class="table table-hover mb-0">
-                <thead class="table-light">
-                    <tr>
-                        <th class="ps-3">Cover</th>
-                        <th>Title</th>
-                        <th>Author</th>
-                        <th>Category</th>
-                        <th>Status</th> <th class="text-center">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
+<?php if (!empty($_SESSION['error'])): ?>
+    <div class="alert alert-error"><?= $_SESSION['error']; unset($_SESSION['error']); ?></div>
+<?php endif; ?>
+
+<div class="card">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Cover</th>
+                <th>Title & Author</th>
+                <th>ISBN</th>
+                <th>Category</th>
+                <th style="text-align: center;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php if (!empty($books)): ?>
                 <?php foreach ($books as $book): ?>
                     <tr>
-                        <td class="ps-3">
-                            <img src="<?= $book['url'] ?: '/library-management-system/public/images/no-image.png' ?>" 
-                                 class="rounded border" width="45" height="60" style="object-fit: cover;">
-                        </td>
-                        <td class="fw-bold"><?= htmlspecialchars($book['title']) ?></td>
-                        <td><?= htmlspecialchars($book['author']) ?></td>
-                        <td><span class="badge bg-info text-dark"><?= htmlspecialchars($book['category_name']) ?></span></td>
                         <td>
-                            <span class="badge <?= ($book['quantity'] > 0) ? 'bg-success' : 'bg-danger' ?>">
-                                <?= ($book['quantity'] > 0) ? 'Available' : 'Out of Stock' ?>
+                            <img src="<?= $book['url'] ?: '/library-management-system/public/images/no-book.png' ?>" 
+                                 style="width: 45px; height: 60px; object-fit: cover; border-radius: 4px; border: 1px solid #e2e8f0;">
+                        </td>
+                        <td>
+                            <div style="font-weight: 600; color: #1e293b;"><?= htmlspecialchars($book['title']) ?></div>
+                            <div style="font-size: 12px; color: #64748b;"><?= htmlspecialchars($book['author']) ?></div>
+                        </td>
+                        <td><code style="background: #f1f5f9; padding: 2px 5px; border-radius: 4px;"><?= htmlspecialchars($book['isbn']) ?></code></td>
+                        <td>
+                            <span style="background: #e0f2fe; color: #0369a1; padding: 3px 8px; border-radius: 12px; font-size: 12px;">
+                                <?= htmlspecialchars($book['category_name']) ?>
                             </span>
                         </td>
-                        <td class="text-center">
-                            <a href="index.php?action=admin-book-edit&id=<?= $book['book_id'] ?>" class="btn btn-outline-warning btn-sm">Edit</a>
-                            
-                            <a href="index.php?action=admin-book-delete&id=<?= $book['book_id'] ?>" 
-                               onclick="return confirm('Bạn có chắc chắn muốn xóa/lưu trữ sách này?')" 
-                               class="btn btn-outline-danger btn-sm">Delete</a>
-                        </td>
+                        <td style="text-align: center;">
+    <div style="display: flex; gap: 8px; justify-content: center;">
+        <a href="index.php?action=admin-book-edit&id=<?= $book['book_id'] ?>" class="btn btn-warning">Edit</a>
+        <a href="index.php?action=admin-book-delete&id=<?= $book['book_id'] ?>" 
+           class="btn btn-danger" 
+           onclick="return confirm('Archive this book?')">Delete</a>
+    </div>
+</td>
                     </tr>
                 <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    </div>
+            <?php else: ?>
+                <tr>
+                    <td colspan="5" style="text-align: center; color: #64748b; padding: 30px;">No books found in database.</td>
+                </tr>
+            <?php endif; ?>
+        </tbody>
+    </table>
 </div>
