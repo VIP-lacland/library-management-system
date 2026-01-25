@@ -47,14 +47,9 @@ switch ($action) {
     case 'unblockUser':
         $userController->unblockUser();
         break;
-
-    // Book Management
-    case 'book-list':
-        $bookController->index();
-        break;
     // Borrowing Management
     case 'borrow-list':
-        $borrowingController->index();
+        $borrowingController->listBorrowings();
         break;
     case 'borrow-requests':
         $borrowingController->requests();
@@ -70,6 +65,18 @@ switch ($action) {
         break;
     case 'borrow-return':
         $borrowingController->returnBook();
+        break;
+    case 'book-management':
+        $bookController->adminBookList();
+        break;
+    case'add-book' :
+        $bookController->addBook();
+        break;
+    case 'delete-book':
+        $bookController->deleteBook();
+        break;
+    case 'edit-book':
+        $bookController->editBook();
         break;
     default:
         $dashboardController->index();

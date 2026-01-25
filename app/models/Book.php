@@ -105,4 +105,65 @@ class Book
 
         return $stmt->fetchAll();
     }
+
+    public function addBook($data)
+{
+    $sql = "INSERT INTO Books (title, author, category_id, publisher, publish_year, description, url) 
+            VALUES (:title, :author, :category_id, :publisher, :publish_year, :description, :url)";
+    
+    $stmt = $this->db->prepare($sql);
+    return $stmt->execute([
+        ':title' => $data['title'],
+        ':author' => $data['author'],
+        ':category_id' => $data['category_id'] ?? null,
+        ':publisher' => $data['publisher'] ?? null,
+        ':publish_year' => $data['publish_year'] ?? null,
+        ':description' => $data['description'] ?? null,
+        ':url' => $data['url'] ?? null
+    ]);
+}
+
+
+public function updateBook($id, $data)
+{
+    $sql = "UPDATE Books 
+            SET title = :title, 
+                author = :author, 
+                category_id = :category_id,
+                publisher = :publisher, 
+                publish_year = :publish_year, 
+                description = :description, 
+                url = :url
+            WHERE book_id = :id";
+    
+    $stmt = $this->db->prepare($sql);
+    return $stmt->execute([
+        ':title' => $data['title'],
+        ':author' => $data['author'],
+        ':category_id' => $data['category_id'] ?? null,
+        ':publisher' => $data['publisher'] ?? null,
+        ':publish_year' => $data['publish_year'] ?? null,
+        ':description' => $data['description'] ?? null,
+        ':url' => $data['url'] ?? null,
+        ':id' => $id
+    ]);
+}
+
+public function deleteBook($id)
+{
+    // Kiểm tra trước nếu cần
+    $checkSql = "SELECT COUNT(*) as total FROM Book_Items WHERE book_id = :id";
+    $checkStmt = $this->db->prepare($checkSql);
+    $checkStmt->execute([':id' => $id]);
+    $result = $checkStmt->fetch();
+    
+    if ($result && $result['total'] > 0) {
+        return false; // Không thể xóa vì còn bản sao
+    }
+    
+    $sql = "DELETE FROM Books WHERE book_id = :id";
+    $stmt = $this->db->prepare($sql);
+    return $stmt->execute([':id' => $id]);
+}
+
 }

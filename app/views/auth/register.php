@@ -78,7 +78,7 @@ if (!defined('BASE_URL')) {
 
         <!-- Link đăng nhập -->
         <div class="text-center mt-3">
-          <p>Already have an account? <a href="/login">Log in now</a></p>
+          <p>Already have an account? <a href="index.php?action=login">Log in now</a></p>
         </div>
       </div>
     </div>

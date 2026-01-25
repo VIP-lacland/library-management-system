@@ -17,10 +17,10 @@ if (!defined('BASE_URL')) {
             <a class="list-group-item list-group-item-action p-3 <?= $act === 'dashboard' ? 'active' : '' ?>" href="admin.php?action=dashboard">
                 <i class="fas fa-tachometer-alt me-2"></i> Dashboard
             </a>
-            <a class="list-group-item list-group-item-action p-3 text-muted" href="#" onclick="return false;" style="cursor: not-allowed;">
+            <a class="list-group-item list-group-item-action p-3" href="admin.php?action=book-management">
                 <i class="fas fa-book me-2"></i> Book Management
             </a>
-            <a class="list-group-item list-group-item-action p-3 text-muted" href="#" onclick="return false;" style="cursor: not-allowed;">
+            <a class="list-group-item list-group-item-action p-3" href="#">
                 <i class="fas fa-list me-2"></i> Category
             </a>
             <!-- Active nếu action bắt đầu bằng 'borrow' (borrow-list, borrow-requests,...) -->

@@ -3,7 +3,7 @@
 class BorrowingController extends Controller
 {
 
-    public function index()
+    public function listBorrowings()
     {
         $borrowModel = $this->model('Borrow');
 
