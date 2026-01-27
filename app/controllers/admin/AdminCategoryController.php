@@ -13,9 +13,7 @@ class AdminCategoryController extends Controller
         $this->categoryModel = $this->model('Category');
     }
 
-    // ===============================
     // LIST
-    // ===============================
     public function index()
     {
         $categories = $this->categoryModel->getAllCategories();
@@ -25,17 +23,13 @@ class AdminCategoryController extends Controller
         ]);
     }
 
-    // ===============================
     // FORM CREATE
-    // ===============================
     public function create()
     {
         $this->view('admin/categories/create');
     }
 
-    // ===============================
     // STORE
-    // ===============================
     public function store()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -65,9 +59,7 @@ class AdminCategoryController extends Controller
         exit;
     }
 
-    // ===============================
     // FORM EDIT
-    // ===============================
     public function edit($id = null)
     {
         if ($id === null) {
@@ -85,9 +77,7 @@ class AdminCategoryController extends Controller
         ]);
     }
 
-    // ===============================
     // UPDATE
-    // ===============================
     public function update()
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -118,8 +108,7 @@ class AdminCategoryController extends Controller
         header("Location: index.php?action=categories");
         exit;
     }
-
-    // ===============================
+    
     // DELETE
     // ===============================
     public function delete($id = null)

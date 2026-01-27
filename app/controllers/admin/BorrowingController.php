@@ -49,7 +49,7 @@ class BorrowingController extends Controller
             $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
             if ($id > 0) {
                 $borrowModel = $this->model('Borrow');
-                // Mặc định mượn 14 ngày
+
                 $dueDate = date('Y-m-d', strtotime('+14 days'));
 
                 if ($borrowModel->approveRequest($id, $dueDate)) {
