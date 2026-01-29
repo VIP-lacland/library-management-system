@@ -15,7 +15,7 @@ if (!isset($_SESSION['user']['role']) || $_SESSION['user']['role'] !== 'admin') 
 require_once('../app/controllers/admin/DashboardController.php');
 require_once('../app/controllers/admin/AdminBookController.php');
 require_once('../app/controllers/admin/AdminUserController.php');
-require_once('../app/controllers/admin/CategoryController.php');
+require_once('../app/controllers/admin/AdminCategoryController.php');
 require_once('../app/controllers/admin/BorrowingController.php');
 
 // Get action from URL
@@ -25,7 +25,7 @@ $action = isset($_GET['action']) ? $_GET['action'] : 'dashboard';
 $dashboardController = new DashboardController();
 $bookController = new AdminBookController();
 $userController = new AdminUserController();
-// $categoryController = new AdminCategoryController();
+$categoryController = new AdminCategoryController();
 $borrowingController = new BorrowingController();
 
 // Admin routing
@@ -77,6 +77,18 @@ switch ($action) {
         break;
     case 'edit-book':
         $bookController->editBook();
+        break;
+    case 'category-list':
+        $categoryController->categoryList();
+        break;
+    case 'add-category':
+        $categoryController->addCategory();
+        break;
+    case 'delete-category':
+        $categoryController->deleteCategory();
+        break;
+    case 'edit-category':
+        $categoryController->editCategory();
         break;
     default:
         $dashboardController->index();

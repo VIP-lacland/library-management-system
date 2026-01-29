@@ -79,7 +79,7 @@ require_once __DIR__ . '../../../../config/config.php';
                             <?php endif; ?>
                         </div>
                     <?php else: ?>
-                        <table class="table table-bordered table-hover">
+                        <table class="table table-hover align-middle">
                             <thead class="table-dark">
                                 <tr>
                                     <th>ID</th>

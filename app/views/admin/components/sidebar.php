@@ -20,7 +20,7 @@ if (!defined('BASE_URL')) {
             <a class="list-group-item list-group-item-action p-3" href="admin.php?action=book-management">
                 <i class="fas fa-book me-2"></i> Book Management
             </a>
-            <a class="list-group-item list-group-item-action p-3" href="#">
+            <a class="list-group-item list-group-item-action p-3" href="admin.php?action=category-list">
                 <i class="fas fa-list me-2"></i> Category
             </a>
             <!-- Active nếu action bắt đầu bằng 'borrow' (borrow-list, borrow-requests,...) -->

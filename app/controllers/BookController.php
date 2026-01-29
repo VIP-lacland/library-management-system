@@ -11,9 +11,7 @@ class BookController extends Controller
 
     public function index()
     {
-        $booklist = $this->model('Book');
-        $books = $booklist->getAllBooks();
-    
+        $books = $this->bookModel->getAllBooks();
         $this->view('index', ['books' => $books]);
     }
 
