@@ -144,4 +144,35 @@ class Borrow {
         $row = $stmt->fetch();
         return $row ? $row['total'] : 0;
     }
+
+    // Đếm tổng số phiếu mượn của một user
+    public function countLoansByUserId($userId) {
+        $sql = "SELECT COUNT(*) as total 
+                FROM Loans 
+                WHERE user_id = :user_id";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+        $row = $stmt->fetch();
+        return $row ? (int)$row['total'] : 0;
+    }
+
+    // Lấy danh sách phiếu mượn của một user (phân trang)
+    public function getLoansByUserIdPaginated($userId, $limit, $offset) {
+        $sql = "SELECT l.*, b.title as book_title
+                FROM Loans l
+                JOIN Book_Items bi ON l.book_items_id = bi.book_items_id
+                JOIN Books b ON bi.book_id = b.book_id
+                WHERE l.user_id = :user_id
+                ORDER BY l.borrow_date DESC
+                LIMIT :limit OFFSET :offset";
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindValue(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->bindValue(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }

@@ -72,20 +72,6 @@ if (!defined('BASE_URL')) {
 
                     <li class="nav-item">
                         <a href="<?= url('index.php?action=index') ?>" class="nav-link">
-                            <i class="fa-solid fa-book"></i>
-                            Books
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="<?= url('index.php?action=index') ?>" class="nav-link">
-                            <i class="fa-solid fa-hand-holding-heart"></i>
-                            My Borrowed Books
-                        </a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a href="<?= url('index.php?action=index') ?>" class="nav-link">
                             <i class="fa-solid fa-tags"></i>
                             Categories
                         </a>

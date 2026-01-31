@@ -17,14 +17,29 @@ class ProfileController extends Controller
             exit;
         }
 
+        $userId = $_SESSION['user']['id'];
+
         // 2. Lấy thông tin user
-        $user = $this->userModel->findById($_SESSION['user']['id']);
+        $user = $this->userModel->findById($userId);
+
+        // 3. Lấy lịch sử mượn sách (phân trang)
+        $borrowModel = $this->model('Borrow');
+        $limit = 5;
+        $currentPage = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
+        $offset = ($currentPage - 1) * $limit;
+
+        $totalLoans = $borrowModel->countLoansByUserId($userId);
+        $totalPages = $totalLoans > 0 ? ceil($totalLoans / $limit) : 0;
+        $loans = $borrowModel->getLoansByUserIdPaginated($userId, $limit, $offset);
 
         // 3. Hiển thị view
         $this->view('profile', [
             'user' => $user,
             'success' => $this->getFlash('success'),
-            'errors' => $this->getFlash('errors')
+            'errors' => $this->getFlash('errors'),
+            'loans' => $loans,
+            'currentPage' => $currentPage,
+            'totalPages' => $totalPages
         ]);
     }
 
