@@ -67,15 +67,51 @@ All members work as **full-stack developers**. Each member participates in both 
 
 ```
 project-root/
-├── app/
-│   ├── controllers/        # Handle application logic
-│   ├── core/               # Core system files
-│   ├── models/             # Database models
-│   └── views/              # User interface
-├── config/                 # Application configuration
-├── database/               # Database schema
-├── public/                 # Public files (CSS, JS, index.php)
-├── README.md
+├── controllers/
+│   └── admin/
+│       ├── AdminBookController.php
+│       ├── AdminCategoryController.php
+│       ├── AdminImportBookController.php
+│       ├── AdminUserController.php
+│       ├── BorrowingController.php
+│       └── DashboardController.php
+│
+├── auth/
+│   ├── forgot-password.php
+│   ├── login.php
+│   ├── register.php
+│   └── reset-password.php
+│
+├── books/
+│   └── detail.php
+│
+├── cart/
+│   ├── borrow_form.php
+│   └── cart_list.php
+│
+├── layouts/
+│   ├── header.php
+│   └── footer.php
+│
+├── index.php
+├── profile.php
+├── blog/
+│
+├── database/
+│   └── schema.sql
+│
+├── public/
+│   ├── css/
+│   ├── images/
+│   ├── js/
+│   ├── .gitkeep
+│   └── .htaccess
+│
+├── admin.php
+├── index.php
+├── .gitignore
+├── composer.phar
+└── README.md
 ```
 
 ## Installation Guide
